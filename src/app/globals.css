@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+/* ============ Theme palettes ============
+   Switch via src/config/theme.ts → data-theme on <html>.
+   Add a preset here + a ThemeKey in theme.ts to extend. */
+:root,
+[data-theme="lime"] {
+  --bg: #0a0a0a;
+  --bg-soft: #111111;
+  --fg: #f2f2f2;
+  --muted: rgba(242, 242, 242, 0.6);
+  --faint: rgba(242, 242, 242, 0.32);
+  --accent: #a7ff9c;
+  --accent-ink: #0a0a0a;
+  --line: rgba(242, 242, 242, 0.16);
+}
+
+[data-theme="amber"] {
+  --bg: #0c0a07;
+  --bg-soft: #141008;
+  --fg: #f6efe2;
+  --muted: rgba(246, 239, 226, 0.6);
+  --faint: rgba(246, 239, 226, 0.32);
+  --accent: #ffb454;
+  --accent-ink: #0c0a07;
+  --line: rgba(246, 239, 226, 0.16);
+}
+
+[data-theme="neon"] {
+  --bg: #0a0710;
+  --bg-soft: #130d1f;
+  --fg: #f2effa;
+  --muted: rgba(242, 239, 250, 0.6);
+  --faint: rgba(242, 239, 250, 0.32);
+  --accent: #c08cff;
+  --accent-ink: #0a0710;
+  --line: rgba(242, 239, 250, 0.16);
+}
+
+[data-theme="blood"] {
+  --bg: #0d0707;
+  --bg-soft: #160b0b;
+  --fg: #f6ecea;
+  --muted: rgba(246, 236, 234, 0.6);
+  --faint: rgba(246, 236, 234, 0.32);
+  --accent: #ff4b3e;
+  --accent-ink: #0d0707;
+  --line: rgba(246, 236, 234, 0.16);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-line: var(--line);
+  --font-sans: var(--font-space);
+  --tracking-display: -0.05em;
+  --tracking-tight: -0.02em;
+}
+
+/* ============ Base ============ */
+html {
+  background: var(--bg);
+  color: var(--fg);
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-space), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ============ Type scale (reference h-d/h-l/h-m/p-*) ============ */
+.text-display {
+  font-size: clamp(3.2rem, 12vw, 12.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+}
+.text-h-l {
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+.text-h-m {
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+.text-p-l {
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  line-height: 1.5;
+}
+.text-p-s {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.text-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+/* ============ Reveal / clip helpers ============ */
+.clip-text {
+  display: block;
+  overflow: hidden;
+}
+.clip-text > span {
+  display: block;
+  will-change: transform;
+}
+[data-reveal] {
+  opacity: 0;
+}
+[data-reveal][data-reveal-visible] {
+  opacity: 1;
+}
+.reveal-line {
+  display: block;
+  overflow: hidden;
+}
+.reveal-line > span {
+  display: block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+.reveal-line.revealed > span {
+  transform: translateY(0);
+}
+
+/* ============ Noise grain ============ */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("/images/noise.avif");
+  background-size: 180px 180px;
+  animation: grain 0.6s steps(4) infinite;
+}
+@keyframes grain {
+  0% { background-position: 0 0; }
+  25% { background-position: -60px 30px; }
+  50% { background-position: 30px -60px; }
+  75% { background-position: -30px -30px; }
+  100% { background-position: 0 0; }
+}
+
+/* ============ Equalizer bars ============ */
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 1.4em;
+}
+.eq.is-playing .eq-bar {
+  animation: eq-bounce 0.9s ease-in-out infinite;
+}
+.eq-bar {
+  width: 3px;
+  height: 100%;
+  background: currentColor;
+  transform-origin: 50% 100%;
+  animation-play-state: paused;
+}
+.eq-bar:nth-child(1) { animation-delay: 0s; }
+.eq-bar:nth-child(2) { animation-delay: 0.12s; }
+.eq-bar:nth-child(3) { animation-delay: 0.24s; }
+.eq-bar:nth-child(4) { animation-delay: 0.36s; }
+.eq-bar:nth-child(5) { animation-delay: 0.18s; }
+.eq-bar:nth-child(6) { animation-delay: 0.3s; }
+.eq-bar:nth-child(7) { animation-delay: 0.06s; }
+.eq-bar:nth-child(8) { animation-delay: 0.42s; }
+@keyframes eq-bounce {
+  0%, 100% { transform: scaleY(0.2); }
+  50% { transform: scaleY(1); }
+}
+
+/* ============ Spin logo ============ */
+.spin-logo {
+  animation: spin 14s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============ Marquee ============ */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marquee-inner {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ============ Buttons ============ */
+.btn-label {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+.btn-label > span {
+  display: block;
+  transition: transform 0.45s var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.btn-label > span:last-child {
+  position: absolute;
+  inset: 0;
+  transform: translateY(110%);
+}
+.btn-label:hover > span:first-child {
+  transform: translateY(-110%);
+}
+.btn-label:hover > span:last-child {
+  transform: translateY(0);
+}
+
+/* ============ Links underline ============ */
+.link-line {
+  position: relative;
+}
+.link-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.link-line:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ============ Custom cursor ============ */
+@media (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor a,
+  body.has-cursor button {
+    cursor: none;
+  }
+}
