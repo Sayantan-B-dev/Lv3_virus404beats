@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { MOTION } from "@/config/motion";
+import { cn } from "@/lib/utils";
 import { Equalizer } from "./Equalizer";
 
 export function SoundToggle({ src, label }: { src: string; label: string }) {

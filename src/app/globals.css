@@ -132,6 +132,10 @@ html.lenis body {
   display: block;
   will-change: transform;
 }
+[data-title-line] {
+  transform: translateY(110%);
+  will-change: transform;
+}
 [data-reveal] {
   opacity: 0;
 }
@@ -145,6 +149,7 @@ html.lenis body {
 .reveal-line > span {
   display: block;
   transform: translateY(110%);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 .reveal-line.revealed > span {

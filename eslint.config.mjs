@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored/scraped third-party code + static assets:
+    "reference_website/**",
+    "general_info_virus404beats/**",
+    "public/**",
   ]),
 ]);
 

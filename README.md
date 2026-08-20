@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+@AGENT.md
+@DESIGN.md
+@.docs/architecture.md
+@.docs/content-guide.md
+@.docs/motion.md
+@.docs/theme-presets.md
 
-## Getting Started
+# virus404beats
 
-First, run the development server:
+Single-page site for **virus404** — Kolkata-based music producer, beatmaker & mix/master engineer.
+Inspired by the paulkalkbrenner.net reference (see `reference_website/`), built as a config-driven,
+themeable Next.js app. Static, no backend.
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack, TypeScript), Tailwind CSS v4
+- GSAP + ScrollTrigger + Lenis (scroll choreography), Framer Motion (`motion`) for menus/micro
+- Space Grotesk via `next/font/google`
+- All content: `src/config/site.ts` · themes: `src/config/theme.ts` · animation flags: `src/config/motion.ts`
+
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev        # dev server (Turbopack) — http://localhost:3000
+npm run build      # production build
+npm run lint       # ESLint (ignores vendored reference_website/ JS)
+node scripts/copy-assets.mjs   # re-copy images from reference_website → public/images
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Docs
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `form.md` — questionnaire → config field map; **[TODO]** values to fill before launch
+- `DESIGN.md` — design system, sections, motion
+- `.docs/` — architecture, content guide, motion guide, theme presets
+- `AGENT.md` / `.agent/instructions.md` — rules for AI agents (and humans) working here
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Content state
 
-## Learn More
+Prefilled from the artist's real info (releases, services, pricing, bio). Remaining **[TODO]**: WhatsApp number,
+email, hero audio demo (`public/audio/track.mp3`), streaming links (Spotify/Amazon/Deezer/iTunes/Beatport/Tidal).
 
-To learn more about Next.js, take a look at the following resources:
+## Git
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Remote: `origin` → github.com/Sayantan-B-dev/Lv3_virus404beats. **Never push without explicit request**;
+commit only at crucial checkpoints.

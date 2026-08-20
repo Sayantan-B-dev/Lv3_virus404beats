@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap, ScrollTrigger, SplitText, Draggable, InertiaPlugin } from "@/lib/gsap";
+import { useEffect, useRef, type RefObject } from "react";
+import { gsap, ScrollTrigger, Draggable } from "@/lib/gsap";
 import { MOTION, EASE, DUR, prefersReducedMotion } from "@/config/motion";
 
 const reduced = () => prefersReducedMotion();
@@ -67,33 +67,32 @@ export function useLineReveal<T extends HTMLElement>(stagger = 0.1) {
   return ref;
 }
 
-/* SplitText word reveal for headings */
-export function useSplitReveal<T extends HTMLElement>(type: "words" | "lines" = "words") {
+/* Line-mask title reveal for [data-title-line] spans inside .clip-text masks */
+export function useTitleReveal<T extends HTMLElement>(stagger = 0.14) {
   const ref = useRef<T>(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const split = new SplitText(el, { type: "lines,words", linesClass: "reveal-line", wordsClass: "split-word" });
-    const targets = type === "lines" ? split.lines : split.words;
+    const lines = gsap.utils.toArray<HTMLElement>("[data-title-line]", el);
     if (reduced()) {
-      gsap.set(targets, { opacity: 1 });
+      gsap.set(lines, { yPercent: 0 });
       return;
     }
-    gsap.set(el, { opacity: 1 });
     const ctx = gsap.context(() => {
-      gsap.from(targets, {
-        yPercent: 120,
-        duration: DUR.slow,
-        ease: EASE.reference,
-        stagger: 0.06,
-        scrollTrigger: { trigger: el, start: "top 82%", once: true },
-      });
-    });
-    return () => {
-      ctx.revert();
-      split.revert();
-    };
-  }, [type]);
+      gsap.fromTo(
+        lines,
+        { yPercent: 110 },
+        {
+          yPercent: 0,
+          duration: DUR.slow,
+          ease: EASE.reference,
+          stagger,
+          scrollTrigger: { trigger: el, start: "top 80%", once: true },
+        },
+      );
+    }, el);
+    return () => ctx.revert();
+  }, [stagger]);
   return ref;
 }
 
@@ -148,7 +147,9 @@ export function useImageCycle<T extends HTMLElement>(count: number, interval = 4
   const ref = useRef<T>(null);
   useEffect(() => {
     if (reduced()) return;
-    const els = gsap.utils.toArray<HTMLElement>("[data-cycle-img]", ref.current);
+    const host = ref.current;
+    if (!host) return;
+    const els = gsap.utils.toArray<HTMLElement>("[data-cycle-img]", host);
     if (!els.length) return;
     const ctx = gsap.context(() => {
       let i = 0;
@@ -159,7 +160,7 @@ export function useImageCycle<T extends HTMLElement>(count: number, interval = 4
         i = next;
       };
       gsap.delayedCall(interval / 1000, loop).repeat(-1);
-    }, ref.current);
+    }, host);
     return () => ctx.revert();
   }, [count, interval]);
   return ref;
@@ -197,9 +198,8 @@ export function useMarquee<T extends HTMLElement>({
   return ref;
 }
 
-/* Custom cursor (lerped dot + labeled bubble) */
-export function useCustomCursor<T extends HTMLElement>(root?: HTMLElement | null) {
-  const ref = useRef<T>(null);
+/* Custom cursor (lerped dot + labeled bubble) — pass the ref of the cursor wrapper */
+export function useCustomCursor<T extends HTMLElement>(ref: RefObject<T | null>) {
   useEffect(() => {
     if (reduced() || !MOTION.customCursor) return;
     const el = ref.current;
@@ -221,7 +221,7 @@ export function useCustomCursor<T extends HTMLElement>(root?: HTMLElement | null
       if (bubble) gsap.to(bubble, { x: pos.x, y: pos.y, duration: 0.3, ease: "power2.out" });
       requestAnimationFrame(raf);
     };
-    const scope = root ?? document;
+    const scope = document;
     const onOver = (e: Event) => {
       const t = e.target as HTMLElement;
       const txt = t.closest<HTMLElement>("[data-cursor-text]")?.getAttribute("data-cursor-text");
@@ -242,7 +242,7 @@ export function useCustomCursor<T extends HTMLElement>(root?: HTMLElement | null
       scope.removeEventListener("mouseover", onOver);
       window.removeEventListener("mouseout", hide);
     };
-  }, [root]);
+  }, [ref]);
   return ref;
 }
 

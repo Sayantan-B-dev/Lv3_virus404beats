@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export function Equalizer({ className }: { className?: string }) {

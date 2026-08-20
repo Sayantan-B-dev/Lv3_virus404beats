@@ -9,6 +9,7 @@ interface SmartImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 export function SmartImage({ src, alt, className, eager, ...rest }: SmartImageProps) {
   return (
+    // eslint-disable-next-line @next/next/no-img-element -- deliberate lazy avif wrapper
     <img
       src={`/images/${src}`}
       alt={alt}
