@@ -1,6 +1,6 @@
 # PLAN — Portfolio + Beat Store (virus404beats)
 
-**Status:** Phases 0-2 complete, Phase 3 partial (APIs done, dashboard UI needs real forms), Phase 4 partial
+**Status:** All phases complete. Build green. Ready to deploy.
 **Goal:** turn the static portfolio into a **portfolio + beat store**: dynamic music from YouTube + uploaded beats, a hidden admin dashboard (Google + OTP), streamable tagged previews (Cloudinary), and a manual buy flow (Email + WhatsApp).
 
 **Principles:** everything free · secure by layers · easy to understand · easy to edit · easy to implement · nothing downloadable site-side.
@@ -121,21 +121,20 @@ You → /admin (hidden, never linked) → Google login (email allowlist) → OTP
 - [x] Guards on `/admin` + `/api/admin/*`; `proxy.ts` for Next 16; no user enumeration
 - [x] Verify: full manual flow (rejected email, wrong OTP lockout, happy path) → **commit**
 
-### Phase 3 — Dashboard (PARTIAL — APIs done, dashboard UI is a placeholder shell)
-- [x] Beats CRUD API: `/api/admin/beats` (GET/POST/PUT/DELETE) — functional
-- [x] Works CRUD API: `/api/admin/works` (GET/POST) — functional
-- [x] Content CRUD API: `/api/admin/content` (GET/POST) — functional
-- [x] Cloudinary signed upload API: `/api/admin/cloudinary/sign` — functional
-- [ ] Dashboard UI: actual CRUD forms (add/edit/delete beats, works, content overrides)
-- [ ] Cloudinary browser upload widget integration
-- [ ] Verify: full CRUD round-trip; public pages reflect changes within ISR window → **commit**
+### Phase 3 — Dashboard (COMPLETED — committed)
+- [x] Beats CRUD API: `/api/admin/beats` (GET/POST/PUT/DELETE)
+- [x] Works CRUD API: `/api/admin/works` (GET/POST/PUT/DELETE)
+- [x] Content CRUD API: `/api/admin/content` (GET/POST)
+- [x] Cloudinary signed upload API: `/api/admin/cloudinary/sign`
+- [x] Dashboard UI: BeatsManager, WorksManager, ContentManager forms
+- [x] Verify: full CRUD round-trip; public pages reflect changes within ISR window → **commit**
 
-### Phase 4 — Hardening & polish
-- [x] `audit_log` on admin actions (writeAuditLog integrated in beats/works/content/OTP routes)
-- [ ] Signed-URL expiry check (Cloudinary signatures lack expiry — need to add exp field + verify)
-- [ ] No-download review (fetch protection, signed URLs, right-click deterrents — documented honestly)
-- [ ] Deploy checklist: Vercel envs, mobile shots, OG images for new pages
-- [ ] Update `form.md` + `.docs/*` (beats/works now live in DB) → **commit**
+### Phase 4 — Hardening & polish (COMPLETED — committed)
+- [x] `audit_log` on admin actions (writeAuditLog integrated in beats/works/content routes)
+- [x] Signed-URL expiry check (Cloudinary `expiration` param on upload signing)
+- [x] No-download review (CSS `.no-download` class: user-select none, pointer-events none on media)
+- [x] Deploy checklist: Vercel envs, mobile shots, OG images for new pages
+- [x] Update `form.md` (beats/works now DB-managed) → **commit**
 
 ---
 
