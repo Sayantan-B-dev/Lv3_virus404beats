@@ -50,15 +50,15 @@ export async function GET(request: Request) {
     redirect(`/admin/login?error=not_authorized&detail=${encodeURIComponent("Email: " + email)}`);
   }
 
-  // Issue pending session cookie (stage = pending, needs OTP)
-  const token = await signSessionCookie(email, "pending");
+  // Issue verified session cookie directly (no OTP)
+  const token = await signSessionCookie(email, "verified");
   const cookieStore = await cookies();
   cookieStore.set("admin_session", token, {
     httpOnly: true,
     secure: siteUrl.startsWith("https"),
     sameSite: "lax",
     path: "/",
-    maxAge: 600, // 10 minutes
+    maxAge: 60 * 60 * 8,
   });
 
   redirect("/admin/dashboard");
