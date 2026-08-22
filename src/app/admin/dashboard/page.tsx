@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { readSessionCookie } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { BeatsManager } from "@/components/admin/BeatsManager";
+import { WorksManager } from "@/components/admin/WorksManager";
+import { ContentManager } from "@/components/admin/ContentManager";
 
 export const metadata: Metadata = {
   title: "Dashboard — virus404",
@@ -30,7 +33,7 @@ export default async function AdminDashboardPage() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 border-r border-line px-4 py-8 shrink-0 hidden md:block">
+        <aside className="w-56 border-r border-line px-4 py-8 shrink-0 hidden md:block">
           <nav className="flex flex-col gap-1">
             <a href="#beats" className="text-sm px-3 py-2 rounded hover:bg-bg-soft transition-colors text-fg">Beats</a>
             <a href="#works" className="text-sm px-3 py-2 rounded hover:bg-bg-soft transition-colors text-fg">Works</a>
@@ -42,28 +45,16 @@ export default async function AdminDashboardPage() {
         <div className="flex-1 px-6 py-8 max-w-4xl">
           <h1 className="text-2xl font-medium mb-8 tracking-tight">Dashboard</h1>
 
-          <section id="beats" className="mb-12">
-            <h2 className="text-sm text-caps text-muted mb-4">Beats</h2>
-            <div className="border border-line rounded-lg p-6 bg-bg-soft">
-              <p className="text-sm text-muted">Beat management: add, edit, delete beats and set prices, covers, cloudinary public IDs.</p>
-              <p className="text-xs text-faint mt-2">Full CRUD implemented in /api/admin/beats (not shown in this preview shell).</p>
-            </div>
+          <section id="beats" className="mb-16">
+            <BeatsManager />
           </section>
 
-          <section id="works" className="mb-12">
-            <h2 className="text-sm text-caps text-muted mb-4">Works</h2>
-            <div className="border border-line rounded-lg p-6 bg-bg-soft">
-              <p className="text-sm text-muted">Works management: add YouTube video IDs or uploaded audio assets.</p>
-              <p className="text-xs text-faint mt-2">Full CRUD implemented in /api/admin/works.</p>
-            </div>
+          <section id="works" className="mb-16">
+            <WorksManager />
           </section>
 
-          <section id="content" className="mb-12">
-            <h2 className="text-sm text-caps text-muted mb-4">Content Overrides</h2>
-            <div className="border border-line rounded-lg p-6 bg-bg-soft">
-              <p className="text-sm text-muted">Edit services, hero text, and about content that overrides site.ts defaults.</p>
-              <p className="text-xs text-faint mt-2">Full CRUD implemented in /api/admin/content.</p>
-            </div>
+          <section id="content" className="mb-16">
+            <ContentManager />
           </section>
         </div>
       </div>

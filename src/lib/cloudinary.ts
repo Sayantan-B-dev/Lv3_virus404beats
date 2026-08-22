@@ -9,15 +9,16 @@ export function isCloudinaryConfigured(): boolean {
   return !!(CLOUD_NAME && API_KEY && API_SECRET);
 }
 
-// Build signed upload parameters for direct browser upload (unsigned not used — we sign server-side)
+// Build signed upload parameters for direct browser upload
 export function getSignedUploadParams(
   publicId: string,
   options: {
     folder?: string;
     resourceType?: "video" | "raw" | "auto";
     allowedFormats?: string[];
-    maxFileSize?: number; // bytes
+    maxFileSize?: number;
     tags?: string[];
+    expiresIn?: number; // seconds from now (default 1 hour)
   } = {}
 ): { signature: string; timestamp: number; apiKey: string; params: Record<string, string> } {
   if (!isCloudinaryConfigured()) {
@@ -29,9 +30,7 @@ export function getSignedUploadParams(
     public_id: publicId,
     timestamp: timestamp.toString(),
     folder,
-    // Overwrite allowed (re-upload same public_id replaces)
     overwrite: "true",
-    // Apply eager transformation: tagged+looped preview
     eager: "e_watermark,l_text:Arial_40_bold:VIRUS404%20BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20/e_loop:3",
     eager_async: "true",
   };
@@ -39,6 +38,7 @@ export function getSignedUploadParams(
   if (options.allowedFormats?.length) paramsToSign.allowed_formats = options.allowedFormats.join(",");
   if (options.maxFileSize) paramsToSign.max_file_size = options.maxFileSize.toString();
   if (options.tags?.length) paramsToSign.tags = options.tags.join(",");
+  if (options.expiresIn) paramsToSign.expiration = (timestamp + options.expiresIn).toString();
 
   // Cloudinary signature: SHA1(sorted_params + api_secret)
   // Sort keys alphabetically, join as key=value, concatenate with &

@@ -45,6 +45,8 @@ Each release also links to YouTube (`https://youtube.com/@virus404beats`). Cover
 
 ## 4. Beats list (`beats[]`)
 
+> **Note:** Beats are now managed via the admin dashboard (`/admin` → Beats tab). The static `beats[]` array in `site.ts` serves as fallback when the DB is empty. To add/edit/delete beats, use the dashboard — changes appear on `/beats` within 60 seconds (ISR).
+
 | Title | Meta | Year | Link |
 |---|---|---|---|
 | ANTISOCIAL | Single · UNFILTERED AKASH, MISHI B & Virus404 | 2026 | **[TODO]** |

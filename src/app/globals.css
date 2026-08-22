@@ -814,3 +814,14 @@ html.lenis body {
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
+
+/* ============ No-download deterrents ============ */
+.no-download {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.no-download img,
+.no-download audio {
+  pointer-events: none;
+}
