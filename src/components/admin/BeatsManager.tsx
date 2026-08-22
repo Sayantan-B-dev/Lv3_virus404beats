@@ -25,6 +25,7 @@ export function BeatsManager() {
   const [form, setForm] = useState(emptyBeat);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -38,6 +39,63 @@ export function BeatsManager() {
 
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
 
+  const uploadFile = async (file: File, folder: string): Promise<string | null> => {
+    const publicId = `${folder}/${file.name.replace(/\.[^.]+$/, "")}-${Date.now()}`;
+    const signRes = await fetch("/api/admin/cloudinary/sign", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ publicId, folder: `virus404beats/${folder}`, resourceType: "video" }),
+    });
+    const signData = await signRes.json();
+    if (!signRes.ok) throw new Error(signData.error ?? "Sign failed");
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("api_key", signData.apiKey);
+    formData.append("timestamp", signData.timestamp.toString());
+    formData.append("signature", signData.signature);
+    formData.append("folder", signData.params.folder);
+    formData.append("public_id", signData.params.public_id);
+    if (signData.params.resource_type) formData.append("resource_type", signData.params.resource_type);
+
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "dhw3ttwaz";
+    const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+      method: "POST",
+      body: formData,
+    });
+    const uploadData = await uploadRes.json();
+    if (!uploadRes.ok) throw new Error(uploadData.error?.message ?? "Upload failed");
+    return uploadData.public_id;
+  };
+
+  const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const publicId = await uploadFile(file, "beats");
+      set("cloudinaryPublicId", publicId);
+      setMsg("Audio uploaded to Cloudinary");
+    } catch (err: any) {
+      setMsg(`Upload failed: ${err.message}`);
+    }
+    setUploading(false);
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const publicId = await uploadFile(file, "covers");
+      set("cover", publicId);
+      setMsg("Cover uploaded to Cloudinary");
+    } catch (err: any) {
+      setMsg(`Upload failed: ${err.message}`);
+    }
+    setUploading(false);
+  };
+
   const save = async () => {
     setMsg("");
     const body = { ...form, price: Number(form.price), sortOrder: Number(form.sortOrder), cloudinaryPublicId: form.cloudinaryPublicId || null, youtubeId: form.youtubeId || null, cover: form.cover || null };
@@ -45,7 +103,9 @@ export function BeatsManager() {
       await fetch("/api/admin/beats", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing.id, ...body }) });
       setMsg("Beat updated");
     } else {
-      await fetch("/api/admin/beats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const res = await fetch("/api/admin/beats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (!res.ok) { setMsg(`Error: ${data.error}`); return; }
       setMsg("Beat created");
     }
     setEditing(null);
@@ -72,18 +132,15 @@ export function BeatsManager() {
         <span className="text-xs text-faint">{beats.length} total</span>
       </div>
 
-      {msg && <div className="mb-4 text-xs text-green-400 border border-green-500/30 bg-green-500/10 rounded p-2">{msg}</div>}
+      {msg && <div className={`mb-4 text-xs border rounded p-2 ${msg.startsWith("Error") || msg.includes("failed") ? "text-red-400 border-red-500/30 bg-red-500/10" : "text-green-400 border-green-500/30 bg-green-500/10"}`}>{msg}</div>}
 
-      {/* Form */}
       <div className="border border-line rounded-lg p-4 bg-bg-soft mb-6">
         <h3 className="text-xs text-caps text-faint mb-3">{editing ? "Edit Beat" : "Add Beat"}</h3>
         <div className="grid grid-cols-2 gap-3">
           <input placeholder="Title" value={form.title} onChange={(e) => set("title", e.target.value)} className="col-span-2 border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
-          <input placeholder="Meta (credits)" value={form.meta} onChange={(e) => set("meta", e.target.value)} className="col-span-2 border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
+          <input placeholder="Credits / description" value={form.meta} onChange={(e) => set("meta", e.target.value)} className="col-span-2 border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
           <input placeholder="Year" value={form.year} onChange={(e) => set("year", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
-          <input placeholder="Price" type="number" value={form.price} onChange={(e) => set("price", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
-          <input placeholder="Cover image" value={form.cover} onChange={(e) => set("cover", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
-          <input placeholder="Cloudinary public ID" value={form.cloudinaryPublicId} onChange={(e) => set("cloudinaryPublicId", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
+          <input placeholder="Price (INR)" type="number" value={form.price} onChange={(e) => set("price", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
           <input placeholder="YouTube ID (optional)" value={form.youtubeId} onChange={(e) => set("youtubeId", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
           <input placeholder="Sort order" type="number" value={form.sortOrder} onChange={(e) => set("sortOrder", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm" />
           <select value={form.status} onChange={(e) => set("status", e.target.value)} className="border border-line rounded px-3 py-2 bg-bg text-fg text-sm">
@@ -95,13 +152,26 @@ export function BeatsManager() {
             Top 10
           </label>
         </div>
+
+        <div className="mt-3 space-y-2">
+          <div>
+            <label className="text-xs text-faint block mb-1">Audio preview (Cloudinary)</label>
+            <input type="file" accept="audio/*" onChange={handleAudioUpload} disabled={uploading} className="text-xs text-fg file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-line file:text-xs file:bg-bg-soft file:text-fg hover:file:border-fg" />
+            {form.cloudinaryPublicId && <p className="text-[10px] text-green-400 mt-1">✓ {form.cloudinaryPublicId}</p>}
+          </div>
+          <div>
+            <label className="text-xs text-faint block mb-1">Cover image</label>
+            <input type="file" accept="image/*" onChange={handleCoverUpload} disabled={uploading} className="text-xs text-fg file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-line file:text-xs file:bg-bg-soft file:text-fg hover:file:border-fg" />
+            {form.cover && <p className="text-[10px] text-green-400 mt-1">✓ {form.cover}</p>}
+          </div>
+        </div>
+
         <div className="flex gap-2 mt-3">
-          <button onClick={save} className="px-4 py-2 text-xs border border-fg bg-fg text-bg rounded hover:bg-transparent hover:text-fg transition-colors">{editing ? "Update" : "Create"}</button>
+          <button onClick={save} disabled={uploading} className="px-4 py-2 text-xs border border-fg bg-fg text-bg rounded hover:bg-transparent hover:text-fg transition-colors disabled:opacity-50">{editing ? "Update" : "Create"}</button>
           {editing && <button onClick={() => { setEditing(null); setForm(emptyBeat); }} className="px-4 py-2 text-xs border border-line rounded text-muted hover:text-fg transition-colors">Cancel</button>}
         </div>
       </div>
 
-      {/* List */}
       {loading ? <p className="text-xs text-faint">Loading...</p> : (
         <div className="space-y-2">
           {beats.map((b) => (

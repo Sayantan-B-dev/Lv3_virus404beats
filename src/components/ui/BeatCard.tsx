@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { AudioPlayer } from "@/components/ui/AudioPlayer";
 import { SmartImage } from "@/components/ui/SmartImage";
-import { getPreviewUrl } from "@/lib/cloudinary";
 
 interface BeatCardProps {
   beat: {
@@ -19,6 +18,7 @@ interface BeatCardProps {
     youtubeId?: string | null | undefined;
     isTop?: boolean;
   };
+  previewUrl?: string;
   isTop10?: boolean;
 }
 
@@ -30,9 +30,8 @@ function formatPrice(price: number, currency: string) {
   }).format(price);
 }
 
-export function BeatCard({ beat, isTop10 = false }: BeatCardProps) {
+export function BeatCard({ beat, previewUrl = "", isTop10 = false }: BeatCardProps) {
   const coverSrc = beat.cover ?? `album-${((beat.id - 1) % 3) + 1}.avif`;
-  const previewUrl = beat.cloudinaryPublicId ? getPreviewUrl(beat.cloudinaryPublicId) : "";
 
   // Buy links: email + WhatsApp prefilled
   const subject = `Beat Purchase: ${beat.title} (${beat.id})`;

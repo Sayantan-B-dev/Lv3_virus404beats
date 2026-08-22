@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { site, contact } from "@/config/site";
 import { getPageData } from "@/lib/data";
+import { getPreviewUrl } from "@/lib/cloudinary";
 import { BeatCard } from "@/components/ui/BeatCard";
 import { Top10Strip } from "@/components/ui/Top10Strip";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -21,6 +22,10 @@ export const metadata: Metadata = {
 
 export default async function BeatsPage() {
   const { beats, topBeats, services, hero } = await getPageData("beats");
+  const topBeatsWithPreview = topBeats.map((b) => ({
+    ...b,
+    previewUrl: b.cloudinaryPublicId ? getPreviewUrl(b.cloudinaryPublicId) : "",
+  }));
 
   return (
     <>
@@ -38,7 +43,7 @@ export default async function BeatsPage() {
         </section>
 
         {/* Top 10 Quick Play Strip */}
-        {topBeats.length > 0 && <Top10Strip beats={topBeats} />}
+        {topBeatsWithPreview.length > 0 && <Top10Strip beats={topBeatsWithPreview} />}
 
         {/* Full Beats Catalog */}
         <section className="beats-catalog" data-section-theme="lime">
@@ -46,7 +51,7 @@ export default async function BeatsPage() {
             <SectionHeading kicker="Catalog" title="ALL BEATS" />
             <div className="beats-grid">
               {beats.map((beat) => (
-                <BeatCard key={beat.id} beat={beat} />
+                <BeatCard key={beat.id} beat={beat} previewUrl={beat.cloudinaryPublicId ? getPreviewUrl(beat.cloudinaryPublicId) : ""} />
               ))}
               {beats.length === 0 && (
                 <div className="empty-state">

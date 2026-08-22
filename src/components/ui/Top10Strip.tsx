@@ -4,7 +4,6 @@ import { useState, useCallback, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { AudioPlayer } from "@/components/ui/AudioPlayer";
 import { SmartImage } from "@/components/ui/SmartImage";
-import { getPreviewUrl } from "@/lib/cloudinary";
 
 interface Top10StripProps {
   beats: Array<{
@@ -17,6 +16,7 @@ interface Top10StripProps {
     cover?: string | null | undefined;
     cloudinaryPublicId?: string | null | undefined;
     isTop?: boolean;
+    previewUrl?: string;
   }>;
 }
 
@@ -28,17 +28,15 @@ export function Top10Strip({ beats }: Top10StripProps) {
   if (topBeats.length === 0) return null;
 
   const activeBeat = topBeats[activeIndex];
-  const previewUrl = activeBeat.cloudinaryPublicId ? getPreviewUrl(activeBeat.cloudinaryPublicId) : "";
+  const previewUrl = activeBeat.previewUrl ?? "";
 
   const handlePlay = useCallback(() => setIsPlaying(true), []);
   const handlePause = useCallback(() => setIsPlaying(false), []);
   const handleEnded = useCallback(() => {
     setIsPlaying(false);
-    // Auto-advance to next
     setActiveIndex((prev) => (prev + 1) % topBeats.length);
   }, [topBeats.length]);
 
-  // Reset play state when track changes
   useEffect(() => {
     setIsPlaying(false);
   }, [activeIndex]);
