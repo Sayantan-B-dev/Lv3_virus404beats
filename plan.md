@@ -114,7 +114,7 @@ You → /admin (hidden, never linked) → Google login (email allowlist) → OTP
 - [x] Nav + metadata + sitemap for new pages
 - [x] Verify: build + lint green → **commit**
 
-### Phase 2 — Auth (hidden admin)
+### Phase 2 — Auth (hidden admin) (IN PROGRESS)
 - [ ] Google OAuth flow (hand-rolled) + `ADMIN_EMAILS` check + JWT cookie
 - [ ] OTP request (rate-limited) → Resend → verify (hash, expiry, attempt cap)
 - [ ] `/admin` + `/admin/login` UI (mono/lime, matches site) + logout
