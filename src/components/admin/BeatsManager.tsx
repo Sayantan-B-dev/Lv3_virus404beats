@@ -39,12 +39,12 @@ export function BeatsManager() {
 
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
 
-  const uploadFile = async (file: File, folder: string): Promise<string | null> => {
+  const uploadFile = async (file: File, folder: string, resourceType = "video"): Promise<string | null> => {
     const publicId = `${folder}/${file.name.replace(/\.[^.]+$/, "")}-${Date.now()}`;
     const signRes = await fetch("/api/admin/cloudinary/sign", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ publicId, folder: `virus404beats/${folder}`, resourceType: "video" }),
+      body: JSON.stringify({ publicId, folder: `virus404beats/${folder}`, resourceType }),
     });
     const signData = await signRes.json();
     if (!signRes.ok) throw new Error(signData.error ?? "Sign failed");
@@ -54,9 +54,9 @@ export function BeatsManager() {
     formData.append("api_key", signData.apiKey);
     formData.append("timestamp", signData.timestamp.toString());
     formData.append("signature", signData.signature);
-    formData.append("folder", signData.params.folder);
-    formData.append("public_id", signData.params.public_id);
-    if (signData.params.resource_type) formData.append("resource_type", signData.params.resource_type);
+    for (const [k, v] of Object.entries(signData.params)) {
+      formData.append(k, String(v));
+    }
 
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "dhw3ttwaz";
     const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
@@ -87,7 +87,7 @@ export function BeatsManager() {
     if (!file) return;
     setUploading(true);
     try {
-      const publicId = await uploadFile(file, "covers");
+      const publicId = await uploadFile(file, "covers", "image");
       set("cover", publicId);
       setMsg("Cover uploaded to Cloudinary");
     } catch (err: any) {

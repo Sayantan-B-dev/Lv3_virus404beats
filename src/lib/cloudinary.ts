@@ -5,6 +5,12 @@ const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 const API_KEY = process.env.CLOUDINARY_API_KEY;
 const API_SECRET = process.env.CLOUDINARY_API_SECRET;
 
+// Cloudinary delivery URLs are public and safe to inline on the client, so use
+// the NEXT_PUBLIC var here (avoids server/client hydration mismatches where the
+// non-public env is only defined during SSR).
+const PUBLIC_CLOUD_NAME =
+  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || CLOUD_NAME;
+
 export function isCloudinaryConfigured(): boolean {
   return !!(CLOUD_NAME && API_KEY && API_SECRET);
 }
@@ -14,7 +20,7 @@ export function getSignedUploadParams(
   publicId: string,
   options: {
     folder?: string;
-    resourceType?: "video" | "raw" | "auto";
+    resourceType?: "video" | "image" | "raw" | "auto";
     allowedFormats?: string[];
     maxFileSize?: number;
     tags?: string[];
@@ -31,7 +37,7 @@ export function getSignedUploadParams(
     timestamp: timestamp.toString(),
     folder,
     overwrite: "true",
-    eager: "e_watermark,l_text:Arial_40_bold:VIRUS404%20BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20/e_loop:3",
+    eager: "e_watermark,l_text:Arial_40_bold:VIRUS404_BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20/e_loop:3",
     eager_async: "true",
   };
   if (options.resourceType) paramsToSign.resource_type = options.resourceType;
@@ -52,21 +58,17 @@ export function getSignedUploadParams(
 // Build streaming URL for a tagged/looped preview
 // Uses delivery transformation: watermark text "VIRUS404 BEATS" + loop 3x (short preview)
 export function getPreviewUrl(publicId: string): string {
-  if (!isCloudinaryConfigured()) return "";
-  // video resource type for audio; format auto-detected
-  // Transformation: audio codec for streaming, loop 3 times, watermark overlay
-  // e_loop:3 loops the audio 3 times (good for ~30-60s preview)
-  // e_watermark: text overlay
-  const transform = "f_auto/vc_auto/e_loop:3/e_watermark,l_text:Arial_40_bold:VIRUS404%20BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20";
-  return `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${transform}/${publicId}`;
+  if (!PUBLIC_CLOUD_NAME) return "";
+  const transform = "f_auto/vc_auto/e_loop:3/e_watermark,l_text:Arial_40_bold:VIRUS404_BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20";
+  return `https://res.cloudinary.com/${PUBLIC_CLOUD_NAME}/video/upload/${transform}/${publicId}`;
 }
 
 // Build cover image URL (for beat cards)
 export function getCoverUrl(publicId: string, options: { width?: number; height?: number; crop?: "fill" | "scale" } = {}): string {
-  if (!isCloudinaryConfigured()) return "";
+  if (!PUBLIC_CLOUD_NAME) return "";
   const { width = 400, height = 400, crop = "fill" } = options;
   const transform = `c_${crop},w_${width},h_${height},f_auto,q_auto`;
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${transform}/${publicId}`;
+  return `https://res.cloudinary.com/${PUBLIC_CLOUD_NAME}/image/upload/${transform}/${publicId}`;
 }
 
 // Verify webhook signature (for future upload callbacks if needed)

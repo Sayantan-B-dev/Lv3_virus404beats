@@ -26,7 +26,8 @@ export async function POST(request: NextRequest) {
     if (!body.title?.trim()) {
       return Response.json({ error: "Title is required" }, { status: 400 });
     }
-    const id = await createBeat(body);
+    const result = await createBeat(body);
+    const id = Number(result.lastInsertRowid);
     await writeAuditLog("beats.create", { id, title: body.title });
     return Response.json({ id, ok: true });
   } catch (e: any) {

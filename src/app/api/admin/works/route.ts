@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   if (!(await requireAdmin())) return Response.json({ error: "Unauthorized" }, { status: 401 });
   const body = await request.json();
   const result = await createWork(body);
-  await writeAuditLog("works.create", { id: result });
+  await writeAuditLog("works.create", { id: Number(result.lastInsertRowid) });
   return Response.json({ ok: true });
 }
 
