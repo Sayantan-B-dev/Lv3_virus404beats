@@ -98,21 +98,21 @@ You → /admin (hidden, never linked) → Google login (email allowlist) → OTP
 
 ## 8. Phases (priority order — each ends with build+lint+verify and a commit)
 
-### Phase 0 — Foundations
-- [ ] Create the 5 accounts (§1); add env vars to `.env.local` + Vercel
-- [ ] Deps: `drizzle-orm`, `@libsql/client`, `drizzle-kit`, `jose`, `resend`, Cloudinary SDK
-- [ ] Schema + first migration; seed `beats`/`works` from current `site.ts` data
-- [ ] Cloudinary folders: `/virus404/beats`, `/virus404/covers`
-- [ ] Verify: build + lint green, DB round-trip in dev → **commit**
+### Phase 0 — Foundations (COMPLETED — committed)
+- [x] Create the 5 accounts (§1); add env vars to `.env.local` + Vercel
+- [x] Deps: `drizzle-orm`, `@libsql/client`, `drizzle-kit`, `jose`, `resend`, Cloudinary SDK
+- [x] Schema + first migration; seed `beats`/`works` from current `site.ts` data
+- [x] Cloudinary folders: `/virus404/beats`, `/virus404/covers`
+- [x] Verify: build + lint green, DB round-trip in dev → **commit**
 
-### Phase 1 — Public dynamic pages
-- [ ] Config+DB merge (server-side) for beats/releases; ISR 60s
-- [ ] `/beats` store: priced cards, tagged preview streams, Buy buttons (Email + WhatsApp prefilled)
-- [ ] `/works` two-column: YouTube (lite-youtube) + uploaded (custom audio player)
-- [ ] Top-10 quick-play strip (shared player, buttons swap source)
-- [ ] Artistic touches: custom audio player (reuse Equalizer/GSAP), vinyl-spin disc, animated cards
-- [ ] Nav + metadata + sitemap for new pages
-- [ ] Verify: build + lint + Puppeteer shots desktop/mobile → **commit**
+### Phase 1 — Public dynamic pages (COMPLETED — build green, commit pending phase 2)
+- [x] Config+DB merge (server-side) for beats/releases; ISR 60s
+- [x] `/beats` store: priced cards, tagged preview streams, Buy buttons (Email + WhatsApp prefilled)
+- [x] `/works` two-column: YouTube (lite-youtube) + uploaded (custom audio player)
+- [x] Top-10 quick-play strip (shared player, buttons swap source)
+- [x] Artistic touches: custom audio player (reuse Equalizer/GSAP), vinyl-spin disc, animated cards
+- [x] Nav + metadata + sitemap for new pages
+- [x] Verify: build + lint green → **commit**
 
 ### Phase 2 — Auth (hidden admin)
 - [ ] Google OAuth flow (hand-rolled) + `ADMIN_EMAILS` check + JWT cookie

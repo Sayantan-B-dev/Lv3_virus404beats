@@ -12,6 +12,10 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: "smooth" });
 }
 
+function isAnchorLink(href: string): boolean {
+  return href.startsWith("#");
+}
+
 export function Nav() {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -28,10 +32,13 @@ export function Nav() {
     return () => removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (href: string) => {
+  const handleLink = (href: string) => {
     setOpen(false);
-    if (lenis) lenis.scrollTo(href, { offset: 0 });
-    else scrollToId(href);
+    if (isAnchorLink(href)) {
+      if (lenis) lenis.scrollTo(href, { offset: 0 });
+      else scrollToId(href);
+    }
+    // For page links (/beats, /works), let <a> handle navigation normally
   };
 
   return (
@@ -48,7 +55,7 @@ export function Nav() {
             href="#hero"
             onClick={(e) => {
               e.preventDefault();
-              go("#hero");
+              handleLink("#hero");
             }}
             className="flex items-center gap-2"
             aria-label="virus404 home"
@@ -65,8 +72,10 @@ export function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={(e) => {
-                  e.preventDefault();
-                  go(l.href);
+                  if (isAnchorLink(l.href)) {
+                    e.preventDefault();
+                    handleLink(l.href);
+                  }
                 }}
                 className="link-line text-caps text-muted transition-colors hover:text-fg"
               >
@@ -77,7 +86,7 @@ export function Nav() {
               href="#contact"
               onClick={(e) => {
                 e.preventDefault();
-                go("#contact");
+                handleLink("#contact");
               }}
               className="border border-fg px-4 py-2 text-caps text-fg transition-colors hover:bg-fg hover:text-bg"
             >
@@ -112,8 +121,10 @@ export function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={(e) => {
-                  e.preventDefault();
-                  go(l.href);
+                  if (isAnchorLink(l.href)) {
+                    e.preventDefault();
+                    handleLink(l.href);
+                  }
                 }}
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

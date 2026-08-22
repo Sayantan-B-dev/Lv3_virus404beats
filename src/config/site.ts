@@ -223,7 +223,8 @@ export const about = {
 
 export const nav = {
   links: [
-    { label: "Beats", href: "#featured" },
+    { label: "Beats", href: "/beats" },
+    { label: "Works", href: "/works" },
     { label: "Services", href: "#services" },
     { label: "Recent", href: "#beats" },
     { label: "Gallery", href: "#gallery" },

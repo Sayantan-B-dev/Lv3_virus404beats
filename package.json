@@ -1,5 +1,5 @@
 {
-  "name": "nextapp",
+  "name": "virus404beats",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,12 @@
     "motion": "^13.1.1",
     "next": "16.3.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "drizzle-orm": "^0.34.0",
+    "@libsql/client": "^0.14.0",
+    "drizzle-kit": "^0.24.0",
+    "jose": "^5.9.0",
+    "resend": "^4.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
