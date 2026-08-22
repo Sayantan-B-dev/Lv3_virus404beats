@@ -1,8 +1,7 @@
 import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
-import { verifySessionCookie, signSessionCookie } from "@/lib/auth";
-import { isDbConfigured, getOtp, deleteOtp, incrementOtpAttempts, writeAuditLog } from "@/lib/db";
-import { hashOtpCode } from "@/lib/auth";
+import { verifySessionCookie, signSessionCookie, hashOtpCode } from "@/lib/auth";
+import { getOtp, deleteOtp, incrementOtpAttempts, writeAuditLog } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
@@ -17,8 +16,8 @@ export async function POST(request: NextRequest) {
     return new Response(JSON.stringify({ error: "Invalid session" }), { status: 403 });
   }
 
-  const body = await request.json();
-  const code = String(body.code ?? "");
+  const formData = await request.formData();
+  const code = String(formData.get("code") ?? "");
 
   const otpRow = await getOtp(session.email);
   if (!otpRow) {
@@ -29,13 +28,11 @@ export async function POST(request: NextRequest) {
   const attempts = Number(otpRow.attempts ?? 0);
   const otpId = Number(otpRow.id ?? 0);
 
-  // Check expiry
   if (expiresAt < Date.now()) {
     await deleteOtp(otpId);
     return new Response(JSON.stringify({ error: "OTP expired" }), { status: 400 });
   }
 
-  // Check attempts cap (5 max)
   if (attempts >= 5) {
     await deleteOtp(otpId);
     return new Response(JSON.stringify({ error: "Too many attempts" }), { status: 429 });
@@ -48,7 +45,7 @@ export async function POST(request: NextRequest) {
     return new Response(JSON.stringify({ error: "Invalid OTP" }), { status: 401 });
   }
 
-  // Verify success — upgrade session
+  // Success — upgrade session to verified
   await deleteOtp(otpId);
   await writeAuditLog("auth.otp.verify", { email: session.email, success: true });
 
@@ -58,8 +55,12 @@ export async function POST(request: NextRequest) {
     secure: (process.env.SITE_URL ?? "").startsWith("https"),
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 8, // 8 hours
+    maxAge: 60 * 60 * 8,
   });
 
-  return new Response(JSON.stringify({ ok: true }), { status: 200 });
+  // Redirect to dashboard (HTML form POST → redirect)
+  return new Response(null, {
+    status: 302,
+    headers: { Location: "/admin/dashboard" },
+  });
 }
