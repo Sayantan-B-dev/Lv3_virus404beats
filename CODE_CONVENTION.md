@@ -1,103 +1,230 @@
 # CODE CONVENTION
 
 ## Purpose
-Project-wide rules for humans and AI coding agents. Optimize for secure, correct, readable, testable, debuggable, maintainable software without unnecessary complexity.
+
+Project-wide rules for humans and AI coding agents.
+
+Optimize for:
+security > correctness > data integrity > requirements > maintainability > performance.
 
 ## Core Rules
-1. Security > correctness > data integrity > requirements > maintainability > performance.
-2. Prefer the simplest solution that fully satisfies the requirement.
-3. Do not add abstractions, dependencies, services, queues, caches, or frameworks without a real need.
-4. Separate responsibilities; keep modules cohesive and loosely coupled.
-5. Make business logic independent from infrastructure where practical.
-6. Validate all external input. Never trust the client.
-7. Never expose secrets, tokens, passwords, internal errors, or sensitive data.
-8. Never silently swallow errors.
-9. Do not invent requirements, APIs, files, configuration, or test results.
-10. Minimize the change surface; do not modify unrelated code.
+
+1. Prefer the simplest solution that fully satisfies the requirement.
+2. No unnecessary abstractions, dependencies, services, queues, caches, or frameworks.
+3. Keep responsibilities separated; modules cohesive; coupling low.
+4. Keep business logic independent from infrastructure where practical.
+5. Validate all external input. Never trust the client.
+6. Never expose secrets, tokens, passwords, internal errors, or sensitive data.
+7. Never silently swallow errors.
+8. Never invent requirements, APIs, files, configuration, or test results.
+9. Minimize change surface. Do not modify unrelated code.
+10. Preserve existing architecture unless a real requirement justifies changing it.
 
 ## SOLID
-- **S**ingle Responsibility: one clear reason to change.
-- **O**pen/Closed: extend behavior without unnecessary modification of stable code.
-- **L**iskov Substitution: implementations must honor their contracts.
-- **I**nterface Segregation: prefer small, focused interfaces.
-- **D**ependency Inversion: business logic should depend on contracts, not infrastructure details.
 
-Use SOLID pragmatically. Do not create interfaces or patterns solely to satisfy a rule.
+**S — Single Responsibility**
+One clear reason to change.
+
+**O — Open/Closed**
+Extend behavior without unnecessary modification of stable code.
+
+**L — Liskov Substitution**
+Implementations must honor contracts.
+
+**I — Interface Segregation**
+Prefer small, focused interfaces.
+
+**D — Dependency Inversion**
+Business logic should depend on contracts, not infrastructure details.
+
+Use SOLID pragmatically.
+Do not create interfaces/patterns only to satisfy SOLID.
 
 ## Code Quality
-- Use descriptive names.
-- Keep functions focused and reasonably small.
-- Prefer explicit control flow over clever code.
-- Avoid God objects, deep nesting, global mutable state, magic values, and catch-all `utils` modules.
-- DRY business/security logic, but do not create bad abstractions just to remove duplication.
-- Comments explain **why**, constraints, invariants, or non-obvious behavior—not obvious syntax.
-- Keep public APIs and important decisions documented.
+
+- Descriptive names.
+- Focused, reasonably small functions.
+- Explicit control flow > clever code.
+- Avoid God objects, deep nesting, global mutable state, magic values.
+- Avoid catch-all `utils` modules.
+- DRY business/security logic.
+- Do not create abstractions only to remove superficial duplication.
+- Comments explain WHY, constraints, invariants, or non-obvious behavior.
+- Document public APIs and important decisions.
+- Prefer readable code over compressed code.
 
 ## Architecture
-Prefer clear flow:
+
+Preferred flow:
 
 `Boundary/API -> Application/Use Case -> Domain/Business Logic -> Infrastructure`
 
-Do not force this structure onto tiny projects. Organize around the actual domain and existing framework conventions.
+Do not force this structure onto tiny/simple code.
 
-## Security
-- Enforce authentication and authorization server-side.
-- Use least privilege and defense in depth.
-- Use parameterized database queries.
-- Validate uploads, paths, webhooks, and external responses.
-- Use secure secret management.
-- Treat exposed secrets as compromised and rotate them.
-- Do not log credentials, tokens, passwords, or sensitive payloads.
-- Use timeouts for external calls.
-- Consider retries, backoff, idempotency, and rate limits where relevant.
+Follow actual domain boundaries and existing framework conventions.
 
-## Errors & Observability
-Errors must be meaningful internally and safe externally.
-Use structured logs, request/correlation IDs, metrics, tracing, and health checks where appropriate.
-Never claim a command, test, build, migration, or security check was run unless it actually was.
+For this project:
+
+`Next.js boundary -> server/application logic -> domain/content logic -> Turso/Cloudinary/external services`
+
+Never put DB/provider secrets or privileged operations in client components.
+
+## Next.js
+
+- Server Components by default.
+- Client Components only where browser APIs, client state, or interaction require them.
+- Keep client islands small.
+- Do not turn an entire page into a Client Component for one interactive feature.
+- Server-side auth/authz.
+- Server-side DB access.
+- Server actions/route handlers only where appropriate.
+
+## Database
+
+- Parameterized queries only.
+- Validate inputs before DB operations.
+- Use constraints and indexes intentionally.
+- Use transactions for atomic multi-step changes.
+- Consider pagination for growing collections.
+- Consider duplicate requests, race conditions, and idempotency where relevant.
+- Do not optimize speculative query performance; measure first.
+- Migrations must be explicit and reviewable.
+
+## External Services
+
+For Google OAuth, Resend, Cloudinary, Turso, and future providers:
+
+- validate external responses
+- use timeouts where supported
+- use safe retries where appropriate
+- consider backoff
+- consider idempotency
+- do not assume external services are always available
+- do not leak raw provider errors to users
 
 ## Data & Concurrency
-Consider constraints, indexes, transactions, migrations, pagination, concurrency, race conditions, duplicate requests, and idempotency.
-Do not optimize database queries or application performance speculatively; measure first.
+
+Consider:
+- constraints
+- indexes
+- transactions
+- migrations
+- pagination
+- race conditions
+- duplicate requests
+- stale state
+- idempotency
+
+Do not add concurrency complexity without a concrete requirement.
+
+## Errors & Observability
+
+Errors must be:
+
+- meaningful internally
+- safe externally
+- actionable for debugging
+
+Use structured logging where practical.
+
+Use request/correlation IDs, metrics, tracing, and health checks where appropriate.
+
+Never expose:
+- stack traces
+- SQL
+- provider secrets
+- internal filesystem paths
+- auth internals
+- sensitive payloads
+
+Never claim a command, test, build, migration, deployment, or security check
+was run unless it actually was.
 
 ## Testing
+
 Test behavior, not implementation details.
-Cover happy paths, validation failures, authorization failures, important edge cases, dependency failures, and security boundaries.
+
+Cover:
+- happy paths
+- validation failures
+- authorization failures
+- important edge cases
+- dependency/provider failures
+- security boundaries
+
 Add regression tests for bugs.
-Prefer many focused unit/integration tests over excessive end-to-end tests.
+
+Prefer focused unit/integration tests over excessive E2E tests.
+
+## Security
+
+See `SECURITY.md`.
+
+Security-sensitive code must follow the project security baseline.
+
+Minimum:
+- server-side authorization
+- parameterized DB access
+- input validation
+- secret protection
+- safe external-service handling
+- upload/path protection
+- safe errors/logging
+- least privilege
+- defense in depth
+
+Do not weaken security to make code easier.
 
 ## AI Workflow
+
 Before non-trivial changes:
-1. Inspect the repository and relevant code.
-2. Identify existing patterns and reusable functionality.
-3. Identify affected boundaries and security concerns.
-4. Make a short implementation plan.
-5. Implement the smallest clean change.
-6. Add/update tests.
-7. Run available validation.
-8. Review security, complexity, and changed files.
+
+1. Inspect repository and relevant code.
+2. Read relevant project docs.
+3. Identify existing patterns/reusable code.
+4. Identify affected boundaries and security concerns.
+5. Make a short implementation plan.
+6. Implement smallest clean change.
+7. Add/update tests.
+8. Run available validation.
+9. Review security, complexity, and changed files.
+10. Update docs when behavior/architecture changes.
 
 AI must not:
-- invent requirements or existing functionality;
-- duplicate existing services/utilities;
-- rewrite unrelated code;
-- weaken security to make code work;
-- fabricate verification results.
+- invent requirements
+- invent existing functionality
+- duplicate existing services/utilities unnecessarily
+- rewrite unrelated code
+- weaken security
+- fabricate verification results
+
+## Change Discipline
+
+Before changing a shared abstraction:
+
+- find all consumers
+- understand current behavior
+- check whether a local change is sufficient
+- preserve backward compatibility where required
+
+Prefer localized changes when possible.
 
 ## Definition of Done
+
 - Requirement satisfied.
 - Existing architecture respected.
 - Security reviewed.
 - Errors handled.
 - Tests added/updated where appropriate.
 - Documentation updated where needed.
-- No unnecessary dependencies or abstractions.
+- No unnecessary dependency.
+- No unnecessary abstraction.
 - No unrelated changes.
-- Code is understandable and debuggable.
+- Code understandable and debuggable.
 
 ## Final Question
-Before finalizing, ask:
 
-> If I had to debug this at 3 AM six months from now, would I understand what is happening, why, and where to fix it?
+> If I had to debug this at 3 AM six months from now, would I understand what
+> is happening, why, and where to fix it?
 
 If not, simplify or restructure it.

@@ -1,5 +1,75 @@
 # TRACK
 
-| # | Time | Change |
-|---|------|--------|
-| 1 | 2026-08-23 18:20 | Agent helper restore |
+PROJECT STATUS
+Defined / implementation not started.
+
+2026-08-23
+DONE
+- project identity defined
+- Next.js direction defined
+- Turso direction defined
+- Cloudinary direction defined
+- Google OAuth direction defined
+- ADMIN_EMAILS authorization defined
+- Resend OTP direction defined
+- signed-session direction defined
+- dynamic CMS requirement defined
+- maximalism + grid brutalism direction defined
+- DESIGN.md = visual source of truth
+- factual confidence rules defined
+
+CONTENT CONTEXT
+Virus404beats = producer/beatmaking brand
+Sayantan Bharati = professional identity
+Virus404 / Virus - 404 = music identity
+since = January 2021
+location = West Bengal, India, remote
+900+ client tracks/projects = self-reported
+genres = drill | trap | afro | jersey | lo-fi | melodic |
+         sample-based | boom bap | old-school
+
+STATUS
+foundation = not started
+public = not started
+database = not started
+media = not started
+auth = not started
+admin = not started
+production hardening = not started
+
+BLOCKERS
+No implementation blocker yet.
+
+PREREQS
+Google OAuth credentials
+Resend config
+Turso DB/token
+Cloudinary credentials
+production domain
+final DESIGN.md
+
+DONE CRITERIA
+[ ] typecheck
+[ ] lint
+[ ] build
+[ ] mobile QA
+[ ] accessibility QA
+[ ] auth QA
+[ ] authz QA
+[ ] OTP abuse QA
+[ ] upload QA
+[ ] unpublished-data isolation
+[ ] env validation
+[ ] SEO/metadata
+[ ] deployment
+
+DOC LINKING
+CONTEXT = what
+ARCHITECTURE = how
+DESIGN = visual/interaction
+CODE_CONVENTION = code
+SECURITY = security
+DESCISIONS = why
+TASK = current scope
+TODO = backlog
+TRACK = progress

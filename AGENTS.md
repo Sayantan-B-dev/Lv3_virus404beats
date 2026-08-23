@@ -1,35 +1,89 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# AGENTS
 
-# This is NOT the Next.js you know
+PROJECT = Virus404beats portfolio
+STACK = Next.js + TypeScript + React + Turso/libSQL + Cloudinary + Google OAuth + Resend + signed session + Vercel
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+PURPOSE
+Public music portfolio now.
+Database-backed dynamic content.
+Secure admin CMS later/alongside public site.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+SOURCE DOCS
+CONTEXT.md = brand/content facts
+ARCHITECTURE.md = system structure
+DESIGN.md = visual/interaction source of truth
+CODE_CONVENTION.md = coding rules
+SECURITY.md = security rules
+DESCISIONS.md = architecture decisions
+TASK.md = current build scope
+TODO.md = backlog
+TRACK.md = progress
 
-# AI Project Engineering Standard
+CORE RULES
+- public content = DB data, not JSX hardcode
+- server owns DB/auth/authz/secrets
+- browser never talks directly to Turso
+- never commit .env.local
+- never expose server secrets
+- never trust client auth/authz
+- every admin mutation rechecks session + authorization
+- validate all external/admin input server-side
+- public queries = published only
 
-A compact, reusable engineering baseline for AI-assisted software projects.
+AUTH
+Google OAuth = identity
+ADMIN_EMAILS = authorization allowlist
+OTP = second verification layer when enabled
+ADMIN SESSION = signed + expiring + secure/httpOnly cookie in production
 
-## Files
+MEDIA
+Cloudinary = audio + cover/media
+Turso = metadata + asset refs
+Never store binary audio in DB.
 
-- `CODE_CONVENTION.md` — main coding and architecture contract.
-- `AGENTS.md` — concise instructions for AI coding agents.
-- `ARCHITECTURE.md` — architecture defaults.
-- `SECURITY.md` — security baseline.
+CONTENT
+tracks
+releases
+release_tracks
+projects
+credits
+services
+social_links
 
-## Change Tracking
+STATUS
+draft | published | archived
 
-After every successful change, session, or commit, append a track entry to `TRACK.md` in the following format:
+PUBLIC
+No login required.
+Never expose draft/archived via:
+pages | API | metadata | search | sitemap
 
-| # | Time | Change |
-|---|------|--------|
-| 1 | 2026-08-23 18:20 | Agent helper restore |
+ADMIN
+Protected routes + server checks.
+UI hiding != security.
 
-- Use 24-hour format with date (YYYY-MM-DD HH:MM)
-- Increment the serial number sequentially
-- Keep the description concise (max 50 chars)
-- Do not modify existing entries; always append new lines
-- This is mandatory for all changes - bug fixes, features, config updates, dependency upgrades, etc.
+NEXT.JS
+RSC default.
+Client components only for browser state/API/interaction needs.
 
+DESIGN
+Maximalism + grid-based brutalism + editorial/music aesthetic.
+Details in DESIGN.md.
+Do not replace with generic SaaS visual style.
 
-<!-- END:nextjs-agent-rules -->
+FACTUALITY
+900+ client tracks/projects = self-reported claim.
+Do not rewrite as 900+ released songs.
+Do not invent clients, releases, stats, credits, achievements.
+
+WORKFLOW
+Read relevant docs before major changes.
+Architecture/security/design changes => update matching docs.
+Feature changes => update TASK/TODO/TRACK as appropriate.
+
+DONE
+typecheck + lint + build pass
+auth/authz tested
+public draft isolation tested
+upload validation tested
+responsive/a11y checked
