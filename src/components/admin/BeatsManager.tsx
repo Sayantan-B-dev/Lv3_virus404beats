@@ -19,12 +19,45 @@ interface Beat {
 
 const emptyBeat = { title: "", meta: "", year: "2026", price: 999, currency: "INR", cover: "", cloudinaryPublicId: "", youtubeId: "", isTop: false, sortOrder: 0, status: "draft" };
 
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "dhw3ttwaz";
+
+// Upload FormData with progress via XHR (fetch has no upload progress).
+function uploadFormData(
+  url: string,
+  formData: FormData,
+  onProgress: (percent: number) => void
+): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+    xhr.upload.onprogress = (e) => {
+      if (e.total > 0) onProgress(Math.min(100, Math.round((e.loaded / e.total) * 100)));
+    };
+    xhr.onload = () => {
+      try {
+        const data = JSON.parse(xhr.responseText);
+        if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+        else reject(new Error(data?.error?.message ?? "Upload failed"));
+      } catch {
+        reject(new Error("Upload failed"));
+      }
+    };
+    xhr.onerror = () => reject(new Error("Network error during upload"));
+    xhr.send(formData);
+  });
+}
+
 export function BeatsManager() {
   const [beats, setBeats] = useState<Beat[]>([]);
   const [editing, setEditing] = useState<Beat | null>(null);
   const [form, setForm] = useState(emptyBeat);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
+
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [coverProgress, setCoverProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
 
   const load = useCallback(async () => {
@@ -39,15 +72,32 @@ export function BeatsManager() {
 
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
 
-  const uploadFile = async (file: File, folder: string, resourceType = "video"): Promise<string | null> => {
-    const publicId = `${folder}/${file.name.replace(/\.[^.]+$/, "")}-${Date.now()}`;
+  const signUpload = async (publicId: string, resourceType: string) => {
     const signRes = await fetch("/api/admin/cloudinary/sign", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ publicId, folder: `virus404beats/${folder}`, resourceType }),
+      body: JSON.stringify({ publicId, resourceType }),
     });
     const signData = await signRes.json();
     if (!signRes.ok) throw new Error(signData.error ?? "Sign failed");
+    return signData;
+  };
+
+  const uploadWithProgress = async (
+    file: File,
+    section: "beats" | "covers",
+    resourceType: string,
+    onProgress: (p: number) => void
+  ): Promise<string> => {
+    onProgress(0);
+    const base = file.name.replace(/\.[^.]+$/, "")
+      .normalize("NFKD")
+      .replace(/[^\w\-]+/g, "_")
+      .replace(/_+/g, "_")
+      .slice(0, 40)
+      .replace(/^_+|_+$/g, ""); // only [A-Za-z0-9_-]
+    const publicId = `virus404beats/${section}/${base || "asset"}-${Date.now()}`;
+    const signData = await signUpload(publicId, resourceType);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -58,64 +108,74 @@ export function BeatsManager() {
       formData.append(k, String(v));
     }
 
-    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "dhw3ttwaz";
-    const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
-      method: "POST",
-      body: formData,
-    });
-    const uploadData = await uploadRes.json();
-    if (!uploadRes.ok) throw new Error(uploadData.error?.message ?? "Upload failed");
+    const uploadData = await uploadFormData(
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`,
+      formData,
+      onProgress
+    );
+    onProgress(100);
     return uploadData.public_id;
-  };
-
-  const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const publicId = await uploadFile(file, "beats");
-      set("cloudinaryPublicId", publicId);
-      setMsg("Audio uploaded to Cloudinary");
-    } catch (err: any) {
-      setMsg(`Upload failed: ${err.message}`);
-    }
-    setUploading(false);
-  };
-
-  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const publicId = await uploadFile(file, "covers", "image");
-      set("cover", publicId);
-      setMsg("Cover uploaded to Cloudinary");
-    } catch (err: any) {
-      setMsg(`Upload failed: ${err.message}`);
-    }
-    setUploading(false);
   };
 
   const save = async () => {
     setMsg("");
-    const body = { ...form, price: Number(form.price), sortOrder: Number(form.sortOrder), cloudinaryPublicId: form.cloudinaryPublicId || null, youtubeId: form.youtubeId || null, cover: form.cover || null };
-    if (editing) {
-      await fetch("/api/admin/beats", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing.id, ...body }) });
-      setMsg("Beat updated");
-    } else {
-      const res = await fetch("/api/admin/beats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      const data = await res.json();
-      if (!res.ok) { setMsg(`Error: ${data.error}`); return; }
-      setMsg("Beat created");
+    if (!form.title.trim()) {
+      setMsg("Error: Title is required");
+      return;
     }
-    setEditing(null);
-    setForm(emptyBeat);
-    load();
+    setUploading(true);
+    try {
+      let cloudinaryPublicId = form.cloudinaryPublicId || null;
+      let cover = form.cover || null;
+
+      if (audioFile) {
+        const publicId = await uploadWithProgress(audioFile, "beats", "video", setAudioProgress);
+        cloudinaryPublicId = publicId;
+        set("cloudinaryPublicId", publicId);
+      }
+      if (coverFile) {
+        const publicId = await uploadWithProgress(coverFile, "covers", "image", setCoverProgress);
+        cover = publicId;
+        set("cover", publicId);
+      }
+
+      const body = {
+        ...form,
+        price: Number(form.price),
+        sortOrder: Number(form.sortOrder),
+        cloudinaryPublicId,
+        youtubeId: form.youtubeId || null,
+        cover,
+      };
+
+      if (editing) {
+        const res = await fetch("/api/admin/beats", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing.id, ...body }) });
+        if (!res.ok) { const d = await res.json(); setMsg(`Error: ${d.error ?? "Update failed"}`); setUploading(false); return; }
+        setMsg("Beat updated");
+      } else {
+        const res = await fetch("/api/admin/beats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        const data = await res.json();
+        if (!res.ok) { setMsg(`Error: ${data.error}`); setUploading(false); return; }
+        setMsg("Beat created");
+      }
+
+      setEditing(null);
+      setForm(emptyBeat);
+      setAudioFile(null);
+      setCoverFile(null);
+      setAudioProgress(0);
+      setCoverProgress(0);
+      load();
+    } catch (err: any) {
+      setMsg(`Error: ${err.message}`);
+    }
+    setUploading(false);
   };
 
   const del = async (id: number) => {
     if (!confirm("Delete this beat?")) return;
-    await fetch("/api/admin/beats", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    const res = await fetch("/api/admin/beats", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    if (!res.ok) { const d = await res.json(); setMsg(`Error: ${d.error ?? "Delete failed"}`); return false; }
     setMsg("Beat deleted");
     load();
   };
@@ -124,6 +184,15 @@ export function BeatsManager() {
     setEditing(b);
     setForm({ title: b.title, meta: b.meta, year: b.year, price: b.price, currency: b.currency, cover: b.cover ?? "", cloudinaryPublicId: b.cloudinaryPublicId ?? "", youtubeId: b.youtubeId ?? "", isTop: b.isTop, sortOrder: b.sortOrder, status: b.status });
   };
+
+  const ProgressBar = ({ value, label }: { value: number; label?: string }) => (
+    <div className="flex items-center gap-2 text-[10px] text-muted">
+      <div className="h-1.5 w-24 bg-bg-soft rounded overflow-hidden">
+        <div className="h-full bg-lime-400 transition-all" style={{ width: `${value}%` }} />
+      </div>
+      <span>{value}%{label ? ` ${label}` : ""}</span>
+    </div>
+  );
 
   return (
     <div>
@@ -156,18 +225,22 @@ export function BeatsManager() {
         <div className="mt-3 space-y-2">
           <div>
             <label className="text-xs text-faint block mb-1">Audio preview (Cloudinary)</label>
-            <input type="file" accept="audio/*" onChange={handleAudioUpload} disabled={uploading} className="text-xs text-fg file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-line file:text-xs file:bg-bg-soft file:text-fg hover:file:border-fg" />
-            {form.cloudinaryPublicId && <p className="text-[10px] text-green-400 mt-1">✓ {form.cloudinaryPublicId}</p>}
+            <input type="file" accept="audio/*" onChange={(e) => { setAudioFile(e.target.files?.[0] ?? null); setAudioProgress(0); }} disabled={uploading} className="text-xs text-fg file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-line file:text-xs file:bg-bg-soft file:text-fg hover:file:border-fg" />
+            {audioFile && <p className="text-[10px] text-faint mt-1">{audioFile.name} (will upload on Create)</p>}
+            {!audioFile && form.cloudinaryPublicId && <p className="text-[10px] text-green-400 mt-1">✓ {form.cloudinaryPublicId}</p>}
+            {audioProgress > 0 && audioProgress < 100 && <div className="mt-1"><ProgressBar value={audioProgress} /></div>}
           </div>
           <div>
             <label className="text-xs text-faint block mb-1">Cover image</label>
-            <input type="file" accept="image/*" onChange={handleCoverUpload} disabled={uploading} className="text-xs text-fg file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-line file:text-xs file:bg-bg-soft file:text-fg hover:file:border-fg" />
-            {form.cover && <p className="text-[10px] text-green-400 mt-1">✓ {form.cover}</p>}
+            <input type="file" accept="image/*" onChange={(e) => { setCoverFile(e.target.files?.[0] ?? null); setCoverProgress(0); }} disabled={uploading} className="text-xs text-fg file:mr-3 file:py-1 file:px-3 file:rounded file:border file:border-line file:text-xs file:bg-bg-soft file:text-fg hover:file:border-fg" />
+            {coverFile && <p className="text-[10px] text-faint mt-1">{coverFile.name} (will upload on Create)</p>}
+            {!coverFile && form.cover && <p className="text-[10px] text-green-400 mt-1">✓ {form.cover}</p>}
+            {coverProgress > 0 && coverProgress < 100 && <div className="mt-1"><ProgressBar value={coverProgress} /></div>}
           </div>
         </div>
 
         <div className="flex gap-2 mt-3">
-          <button onClick={save} disabled={uploading} className="px-4 py-2 text-xs border border-fg bg-fg text-bg rounded hover:bg-transparent hover:text-fg transition-colors disabled:opacity-50">{editing ? "Update" : "Create"}</button>
+          <button onClick={save} disabled={uploading} className="px-4 py-2 text-xs border border-fg bg-fg text-bg rounded hover:bg-transparent hover:text-fg transition-colors disabled:opacity-50">{uploading ? "Uploading…" : editing ? "Update" : "Create"}</button>
           {editing && <button onClick={() => { setEditing(null); setForm(emptyBeat); }} className="px-4 py-2 text-xs border border-line rounded text-muted hover:text-fg transition-colors">Cancel</button>}
         </div>
       </div>
