@@ -31,13 +31,5 @@ After every successful change, session, or commit, append a track entry to `TRAC
 - Do not modify existing entries; always append new lines
 - This is mandatory for all changes - bug fixes, features, config updates, dependency upgrades, etc.
 
-## Running the Next.js App
-
-```bash
-npm run dev        # dev server (Turbopack) — http://localhost:3000
-npm run build      # production build
-npm run lint       # ESLint (ignores vendored reference_website/ JS)
-node scripts/copy-assets.mjs   # re-copy images from reference_website → public/images
-```
 
 <!-- END:nextjs-agent-rules -->

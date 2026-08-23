@@ -1,12 +1,9 @@
-# AI Project Engineering Standard
 
-A compact, reusable engineering baseline for AI-assisted software projects.
+## Running the Next.js App
 
-## Files
-
-- `CODE_CONVENTION.md` — main coding and architecture contract.
-- `AGENTS.md` — concise instructions for AI coding agents.
-- `ARCHITECTURE.md` — architecture defaults.
-- `SECURITY.md` — security baseline.
-
-Copy these files into a project and adapt only where the project's language/framework genuinely requires different conventions.
+```bash
+npm run dev        # dev server (Turbopack) — http://localhost:3000
+npm run build      # production build
+npm run lint       # ESLint (ignores vendored reference_website/ JS)
+node scripts/copy-assets.mjs   # re-copy images from reference_website → public/images
+```
