@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const params = getSignedUploadParams(body.publicId, {
-      folder: body.folder ?? "virus404/beats",
+      folder: body.folder, // optional; publicId may already carry the full path
       resourceType: body.resourceType ?? "video",
       tags: body.tags ?? ["virus404"],
     });

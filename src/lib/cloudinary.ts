@@ -31,16 +31,13 @@ export function getSignedUploadParams(
     throw new Error("Cloudinary not configured");
   }
   const timestamp = Math.floor(Date.now() / 1000);
-  const folder = options.folder ?? "virus404/beats";
+  const folder = options.folder?.trim();
   const paramsToSign: Record<string, string> = {
     public_id: publicId,
     timestamp: timestamp.toString(),
-    folder,
     overwrite: "true",
-    eager: "e_watermark,l_text:Arial_40_bold:VIRUS404_BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20/e_loop:3",
-    eager_async: "true",
   };
-  if (options.resourceType) paramsToSign.resource_type = options.resourceType;
+  if (folder) paramsToSign.folder = folder;
   if (options.allowedFormats?.length) paramsToSign.allowed_formats = options.allowedFormats.join(",");
   if (options.maxFileSize) paramsToSign.max_file_size = options.maxFileSize.toString();
   if (options.tags?.length) paramsToSign.tags = options.tags.join(",");
@@ -59,7 +56,7 @@ export function getSignedUploadParams(
 // Uses delivery transformation: watermark text "VIRUS404 BEATS" + loop 3x (short preview)
 export function getPreviewUrl(publicId: string): string {
   if (!PUBLIC_CLOUD_NAME) return "";
-  const transform = "f_auto/vc_auto/e_loop:3/e_watermark,l_text:Arial_40_bold:VIRUS404_BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20";
+  const transform = "f_auto/vc_auto/e_loop:3/l_text:Arial_40_bold:VIRUS404_BEATS,co_rgb:ff0000,o_50,g_south_east,y_20,x_20";
   return `https://res.cloudinary.com/${PUBLIC_CLOUD_NAME}/video/upload/${transform}/${publicId}`;
 }
 
