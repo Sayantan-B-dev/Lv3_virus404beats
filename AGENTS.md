@@ -1,24 +1,23 @@
-# AI AGENT RULES
+<!-- BEGIN:nextjs-agent-rules -->
 
-Read `CODE_CONVENTION.md` before changing code.
+# This is NOT the Next.js you know
 
-Keep responses and plans concise. Do not consume context with unnecessary explanation.
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
-For non-trivial work:
-- inspect before editing;
-- reuse existing patterns;
-- plan briefly;
-- make the smallest safe change;
-- test what changed;
-- report only verified results.
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
-Never invent files, APIs, requirements, credentials, test results, or architecture.
+# AI Project Engineering Standard
 
-Never weaken security or validation to make a feature pass.
+A compact, reusable engineering baseline for AI-assisted software projects.
 
-Prefer simple, readable, modular code over clever or over-engineered solutions.
+## Files
 
-## Change Tracking Protocol
+- `CODE_CONVENTION.md` — main coding and architecture contract.
+- `AGENTS.md` — concise instructions for AI coding agents.
+- `ARCHITECTURE.md` — architecture defaults.
+- `SECURITY.md` — security baseline.
+
+## Change Tracking
 
 After every successful change, session, or commit, append a track entry to `TRACK.md` in the following format:
 
@@ -31,3 +30,14 @@ After every successful change, session, or commit, append a track entry to `TRAC
 - Keep the description concise (max 50 chars)
 - Do not modify existing entries; always append new lines
 - This is mandatory for all changes - bug fixes, features, config updates, dependency upgrades, etc.
+
+## Running the Next.js App
+
+```bash
+npm run dev        # dev server (Turbopack) — http://localhost:3000
+npm run build      # production build
+npm run lint       # ESLint (ignores vendored reference_website/ JS)
+node scripts/copy-assets.mjs   # re-copy images from reference_website → public/images
+```
+
+<!-- END:nextjs-agent-rules -->
