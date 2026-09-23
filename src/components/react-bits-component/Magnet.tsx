@@ -5,6 +5,8 @@
 // inside this file under the documented vendored exception, because the
 // values are computed per mousemove and cannot be predefined classes.
 
+"use client";
+
 import React, { useState, useEffect, useRef, type ReactNode, type HTMLAttributes } from 'react';
 
 interface MagnetProps extends HTMLAttributes<HTMLDivElement> {

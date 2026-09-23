@@ -1,16 +1,17 @@
 # TRACK
 
 PROJECT STATUS
-Static port in progress. Reference HTML to Next.js with exact style.
-DB, Cloudinary upload, auth, and admin follow after the static port.
+Static port complete with motion system. Reference HTML to Next.js.
+Pure CSS rule active. DB, Cloudinary upload, auth, admin follow next.
 
 2026-09-23
 DONE
-- docs moved to docs/, AGENTS.md kept at root as router
-- .agents/ created with frontend-design skill installed
-- Next.js patched to 16.3.6, audit at 0 vulnerabilities
-- static port complete: shell, hero, release plus audio, work,
-  services, about, contact, footer
+- style system split into src/styles layers, globals holds imports only
+- pure CSS rule embedded in docs/CODE_CONVENTION.md plus AGENTS.md
+- SVG icon set replaces all text glyphs, broken play icon fixed
+- React Bits vendored: SplitText, TargetCursor, Magnet, GlitchText
+- real Web Audio spectrum with procedural fallback, class based levels
+- hero overlap guards, scroll parallax, drift loops, card glow
 - typecheck plus lint plus build pass, homepage render verified
 
 2026-08-23

@@ -5,6 +5,8 @@
 // class instead of tweening colors. Disabled entirely under
 // prefers-reduced-motion.
 
+"use client";
+
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';

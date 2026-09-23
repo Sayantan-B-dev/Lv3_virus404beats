@@ -3,6 +3,8 @@
 // Adapted: inline style object replaced with split-parent plus alignment
 // classes in src/styles/react-bits.css, per the pure CSS rule.
 
+"use client";
+
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
