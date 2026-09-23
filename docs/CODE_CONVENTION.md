@@ -209,6 +209,10 @@ Pure CSS only. This rule binds humans and AI agents alike.
 - Runtime values (audio levels, progress, rotation) use quantized state
   classes defined in CSS, for example `sb-0` to `sb-12` or `p-0` to `p-100`.
   JS may switch classes, never compute colors, sizes, or transforms.
+- Narrow interaction exception: pointer driven positions (drag offsets,
+  cursor parallax, magnetic pull) may be written from client code, but only
+  as translate offsets (`--dx`/`--dy`) or quantized classes. Colors, fonts,
+  rotations, and layout styling stay in CSS no matter what.
 - One documented exception: internals of vendored files inside
   `src/components/react-bits-component/`.
 - New styles go in the matching split file. Breakpoints go only in

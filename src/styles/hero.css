@@ -160,9 +160,43 @@
 /* ripped paper fragments around hero */
 .paper{
   position:absolute;z-index:2;background:var(--paper);color:#111;box-shadow:6px 7px 0 #050505;
-}
-.paper.sheet1{left:43%;top:10%;width:145px;height:115px;padding:17px;clip-path:polygon(0 3%,94% 0,100% 84%,75% 100%,0 92%);transform:rotate(-2deg)}
+}.paper.sheet1{left:43%;top:10%;width:145px;height:115px;padding:17px;clip-path:polygon(0 3%,94% 0,100% 84%,75% 100%,0 92%);transform:rotate(-2deg)}
 .paper.sheet1 h4{margin:0;font:23px var(--display)}.paper.sheet1 p{font:8px/1.45 var(--mono);margin:7px 0 0}
 .paper.sheet2{left:29%;bottom:5%;width:190px;height:72px;transform:rotate(1.5deg);padding:12px 15px;clip-path:polygon(0 7%,83% 0,100% 19%,96% 88%,69% 100%,4% 94%)}
 .paper.sheet2 b{font:17px var(--display)}.paper.sheet2 small{display:block;font-size:7px;margin-top:3px}
-.paper.sheet3{right:0;top:22%;width:106px;height:180px;background:#151412;color:var(--red);border:1px solid #554f45;padding:9px;transform:rotate(4deg);clip-path:polygon(4% 0,100% 6%,89% 88%,18% 100%,0 60%);font:100px/.8 var(--display);text-align:center}
+.paper.sheet3{right:0;top:22%;width:106px;height:180px;background:#151412;color:var(--red);border:1px solid #554f45;padding:9px;transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(4deg);clip-path:polygon(4% 0,100% 6%,89% 88%,18% 100%,0 60%);font:100px/.8 var(--display);text-align:center}
+
+/* Stickers. Taped micro labels scattered over the collage. */
+.sticker{
+  position:absolute;z-index:9;background:var(--paper2);color:#111;
+  font:9px var(--mono);letter-spacing:1.5px;white-space:nowrap;
+  padding:6px 10px;box-shadow:4px 4px 0 #050505;
+}
+.sticker.s1{left:5%;top:9%}
+.sticker.s2{left:34%;top:4%}
+.sticker.s3{right:30%;top:6%}
+.sticker.s4{right:6%;top:60%}
+
+/* Drag layer. JS writes only --dx/--dy, appended below to each
+   item's own transform so rotations stay in the stylesheet. */
+.hero-draglayer{display:contents}
+.hero [data-drag]{touch-action:none;cursor:grab}
+.hero [data-drag].is-dragging{cursor:grabbing;z-index:40}
+.note.craft{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-1.1deg)}
+.note.genres{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(1.6deg)}
+.paper.sheet1{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-2deg)}
+.paper.sheet2{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(1.5deg)}
+.scribble.one{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-9deg)}
+.scribble.two{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-10deg)}
+.scribble.three{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-4deg)}
+.scribble.four{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(7deg)}
+.marker.m1{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(8deg)}
+.marker.m2{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-5deg)}
+.marker.m3{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(10deg)}
+.cross{transform:translate3d(var(--dx,0px),var(--dy,0px),0)}
+.crosshair{transform:translate3d(var(--dx,0px),var(--dy,0px),0)}
+.barcode{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-1deg)}
+.sticker.s1{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-4deg)}
+.sticker.s2{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(3deg)}
+.sticker.s3{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(-2deg)}
+.sticker.s4{transform:translate3d(var(--dx,0px),var(--dy,0px),0) rotate(5deg)}
