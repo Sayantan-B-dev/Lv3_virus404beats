@@ -8,6 +8,7 @@
 @keyframes marquee{to{transform:translateX(-50%)}}
 
 .section{padding:19px 39px 39px;border-bottom:1px solid #3a3731}
+.section[id],.hero[id]{scroll-margin-top:14px}
 .section-head{
   border-top:1px solid #4b4740;padding-top:9px;margin-bottom:17px;
   display:flex;justify-content:space-between;align-items:center;

@@ -16,6 +16,7 @@
     #070707;
   border-right:1px solid #4b4841;
   display:flex;flex-direction:column;
+  transition:width var(--duration-medium) var(--ease-rough);
 }
 .brand{
   height:119px;padding:26px 31px;border-bottom:1px solid #4b4841;
@@ -31,6 +32,33 @@
   border-radius:50%;background:#070707;display:grid;place-items:center;color:#aaa;
   box-shadow:0 0 0 5px #070707;
 }
+.brand-mark{display:none;font:900 22px/1 var(--display);letter-spacing:1px}
+.brand-mark span{color:var(--red)}
+.rail-toggle{
+  position:absolute;right:8px;top:8px;width:26px;height:26px;
+  border:1px solid #4b4841;background:transparent;cursor:pointer;
+  display:grid;place-items:center;color:#77736b;
+  transition:color var(--duration-fast) var(--ease-clean),border-color var(--duration-fast) var(--ease-clean);
+}
+.rail-toggle:hover{color:var(--red);border-color:var(--red)}
+.rail-toggle svg{width:13px;height:13px;display:block}
+
+/* Collapsed rail. Slim icon strip, resets on refresh. */
+html.rail-collapsed{--rail:64px}
+html.rail-collapsed .brand{padding:22px 6px;height:96px;display:grid;place-items:center}
+html.rail-collapsed .brand h1,
+html.rail-collapsed .brand small,
+html.rail-collapsed .brand .ring{display:none}
+html.rail-collapsed .brand-mark{display:block}
+html.rail-collapsed .rail-toggle{right:50%;transform:translateX(50%);top:auto;bottom:6px}
+html.rail-collapsed .nav-wrap{padding:30px 0 0}
+html.rail-collapsed .nav-label,
+html.rail-collapsed .rail-meta{display:none}
+html.rail-collapsed .nav a{font-size:0;padding:13px 0}
+html.rail-collapsed .nav a:before{left:50%;transform:translate(-50%,-50%)}
+html.rail-collapsed .nav a:hover{transform:none}
+html.rail-collapsed .nav a.active:after{display:none}
+html.rail-collapsed .side-player{display:none}
 .nav-wrap{padding:42px 24px 0 40px}
 .nav-label{
   margin:0 0 10px 20px;color:#5f5b55;font-size:7px;letter-spacing:2px;
@@ -85,7 +113,7 @@
 .side-socials svg{width:12px;height:12px;display:block}
 
 /* APP SHELL */
-main{margin-left:var(--rail)}
+main{margin-left:var(--rail);transition:margin-left var(--duration-medium) var(--ease-rough)}
 .topbar{
   min-height:73px;padding:0 36px;display:flex;align-items:center;justify-content:space-between;
   border-bottom:1px solid #3b3934;font-size:10px;

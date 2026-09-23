@@ -70,6 +70,22 @@ export function ArrowIcon({ className }: IconProps) {
   );
 }
 
+export function ChevLeftIcon({ className }: IconProps) {
+  return (
+    <Base className={className}>
+      <path d="M14.5 5.5L8 12l6.5 6.5" />
+    </Base>
+  );
+}
+
+export function ChevRightIcon({ className }: IconProps) {
+  return (
+    <Base className={className}>
+      <path d="M9.5 5.5L16 12l-6.5 6.5" />
+    </Base>
+  );
+}
+
 export function YouTubeIcon({ className }: IconProps) {
   return (
     <Base className={className}>
