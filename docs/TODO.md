@@ -1,6 +1,13 @@
 # TODO
 
-NOW
+STATIC PORT (reference_web.html to Next.js, exact style)
+[ ] repo structure (docs/ + .agents/)
+[ ] Next.js shell (layout, fonts, tokens)
+[ ] homepage sections (hero, release, work, services, about, contact)
+[ ] audio player (single Cloudinary mp3 for all tracks)
+[ ] picsum placeholders via central media module
+
+NOW (after static port)
 [ ] repo structure
 [ ] Next.js shell
 [ ] design tokens

@@ -6,18 +6,26 @@ STACK = Next.js + TypeScript + React + Turso/libSQL + Cloudinary + Google OAuth 
 PURPOSE
 Public music portfolio now.
 Database-backed dynamic content.
-Secure admin CMS later/alongside public site.
+Secure admin CMS later alongside public site.
 
-SOURCE DOCS
-CONTEXT.md = brand/content facts
-ARCHITECTURE.md = system structure
-DESIGN.md = visual/interaction source of truth
-CODE_CONVENTION.md = coding rules
-SECURITY.md = security rules
-DESCISIONS.md = architecture decisions
-TASK.md = current build scope
-TODO.md = backlog
-TRACK.md = progress
+DOCS
+All project docs live in docs/. Read them before major changes.
+docs/CONTEXT.md = brand and content facts
+docs/ARCHITECTURE.md = system structure
+docs/DESIGN.md = visual and interaction source of truth
+docs/CODE_CONVENTION.md = coding rules
+docs/SECURITY.md = security rules
+docs/DESCISIONS.md = architecture decisions
+docs/TASK.md = current build scope
+docs/TODO.md = backlog
+docs/TRACK.md = progress
+docs/CLAUDE.md = agent quick reference
+docs/README.md = project overview
+docs/general_info_virus404beats = extended professional profile
+
+AGENT CONFIG
+.agents/ holds installed agent skills.
+See .agents/README.md for the skill list.
 
 CORE RULES
 - public content = DB data, not JSX hardcode
@@ -68,7 +76,7 @@ Client components only for browser state/API/interaction needs.
 
 DESIGN
 Maximalism + grid-based brutalism + editorial/music aesthetic.
-Details in DESIGN.md.
+Details in docs/DESIGN.md.
 Do not replace with generic SaaS visual style.
 
 FACTUALITY
@@ -79,7 +87,7 @@ Do not invent clients, releases, stats, credits, achievements.
 WORKFLOW
 Read relevant docs before major changes.
 Architecture/security/design changes => update matching docs.
-Feature changes => update TASK/TODO/TRACK as appropriate.
+Feature changes => update docs/TASK, docs/TODO, docs/TRACK as appropriate.
 
 DONE
 typecheck + lint + build pass

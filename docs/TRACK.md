@@ -1,7 +1,14 @@
 # TRACK
 
 PROJECT STATUS
-Defined / implementation not started.
+Static port in progress. Reference HTML to Next.js with exact style.
+DB, Cloudinary upload, auth, and admin follow after the static port.
+
+2026-09-23
+DONE
+- docs moved to docs/, AGENTS.md kept at root as router
+- .agents/ created with frontend-design skill installed
+- Next.js patched to 16.3.6, audit at 0 vulnerabilities
 
 2026-08-23
 DONE
