@@ -9,6 +9,9 @@ DONE
 - docs moved to docs/, AGENTS.md kept at root as router
 - .agents/ created with frontend-design skill installed
 - Next.js patched to 16.3.6, audit at 0 vulnerabilities
+- static port complete: shell, hero, release plus audio, work,
+  services, about, contact, footer
+- typecheck plus lint plus build pass, homepage render verified
 
 2026-08-23
 DONE
