@@ -1,15 +1,19 @@
 @import "tailwindcss";
 
-/* Base tokens. Full visual system lives in ../styles/virus.css. */
+/* Import only file. No selectors, no tokens, no declarations here. */
+/* Styling rule: all CSS lives in src/styles/*. Split files below. */
+/* TSX files must not contain style props or CSS. See docs/CODE_CONVENTION.md. */
 
-:root {
-  --background: #050505;
-  --foreground: #eee9df;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-display: var(--font-display);
-  --font-mono: var(--font-mono);
-}
+@import "../styles/variables.css";
+@import "../styles/base.css";
+@import "../styles/layout.css";
+@import "../styles/hero.css";
+@import "../styles/sections.css";
+@import "../styles/release.css";
+@import "../styles/work.css";
+@import "../styles/services.css";
+@import "../styles/about.css";
+@import "../styles/contact.css";
+@import "../styles/effects.css";
+@import "../styles/responsive.css";
+@import "../styles/react-bits.css";

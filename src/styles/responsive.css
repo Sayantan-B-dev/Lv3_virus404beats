@@ -1,0 +1,43 @@
+/* 12 - Responsive. All breakpoints live here, nowhere else. */
+
+@media(max-width:1120px){
+  :root{--rail:170px}
+  .release{grid-template-columns:210px 1fr}
+  .viz{display:none}
+  .services{grid-template-columns:1fr 1fr}
+  .service:nth-child(2){border-right:0}
+  .service:nth-child(3),.service:nth-child(4){border-top:1px solid #45413b}
+  .hero-copy{width:64%}.hero-photo{width:43%;right:1%}.note.craft{right:38%}
+}
+@media(max-width:760px){
+  :root{--rail:0px}
+  .rail{position:relative;width:100%;height:auto}
+  .brand{height:90px;padding:20px}
+  .nav-wrap{display:flex;overflow:auto;padding:3px 13px}
+  .nav-label,.rail-meta{display:none}
+  .nav{display:flex;min-width:max-content}
+  .nav a{padding:11px 13px}
+  .nav a:before,.nav a:after{display:none}
+  .side-player{display:none}
+  main{margin-left:0}
+  .topbar{padding:0 18px;min-height:60px}.topbar>div{display:none}.work-link{margin-left:auto}
+  .hero{padding:22px 18px;min-height:955px}
+  .hero-copy{width:100%}
+  .hero h2{font-size:clamp(80px,20vw,135px)}
+  .hero-photo{position:relative;right:auto;top:auto;width:79%;height:390px;margin:25px 0 0 auto}
+  .note.craft{display:none}.note.genres{right:11px;bottom:50px}.trusted{left:18px;width:55%;gap:8px}
+  .scribble.one{right:8%;top:42px}.scribble.two{right:12%;bottom:22px}
+  .paper.sheet1{left:41%;top:16%}.paper.sheet2{left:24%;bottom:4%}.paper.sheet3{display:none}
+  .section{padding:19px 18px 29px}
+  .release{grid-template-columns:1fr}
+  .release-cover{height:300px;border-right:0;border-bottom:1px solid #4e4941}
+  .release-info{border-right:0;border-bottom:1px solid #4e4941}
+  .track{grid-template-columns:28px 1fr 49px}.track .size{display:none}
+  .workgrid{grid-template-columns:1fr 1fr}
+  .workcard.big{grid-column:span 2;grid-row:auto;height:470px}
+  .services,.about,.contact{grid-template-columns:1fr}
+  .service:nth-child(2),.service:nth-child(4){border-right:0}
+  .service:nth-child(3),.service:nth-child(4){border-top:1px solid #45413b}
+  .about-copy h4{font-size:80px}.about-pic{min-height:390px}.contact-main h4{font-size:95px}
+  .footer{padding:25px 18px;flex-direction:column;gap:14px}
+}

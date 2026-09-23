@@ -1,0 +1,7 @@
+/* 08 - Services. Technical poster blocks, not SaaS cards. */
+
+.services{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #45413b}
+.service{position:relative;min-height:200px;padding:18px;border-right:1px solid #45413b;overflow:hidden}
+.service:last-child{border-right:0}.service small{color:var(--red);font-size:8px}
+.service h4{font:40px var(--display);margin:40px 0 9px}.service p{margin:0;font-size:8px;line-height:1.75;color:#87827a}
+.service:after{content:"404";position:absolute;right:-8px;bottom:-24px;font:125px var(--display);color:transparent;-webkit-text-stroke:1px #20201e}

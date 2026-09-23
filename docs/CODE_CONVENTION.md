@@ -198,6 +198,22 @@ AI must not:
 - weaken security
 - fabricate verification results
 
+## Styling
+
+Pure CSS only. This rule binds humans and AI agents alike.
+
+- All CSS lives in `src/styles/*.css`, imported in order by
+  `src/app/globals.css`. That file holds imports only, never declarations.
+- TSX files must not contain `style` props, inline `<style>` blocks,
+  CSS-in-JS, or hardcoded presentation values.
+- Runtime values (audio levels, progress, rotation) use quantized state
+  classes defined in CSS, for example `sb-0` to `sb-12` or `p-0` to `p-100`.
+  JS may switch classes, never compute colors, sizes, or transforms.
+- One documented exception: internals of vendored files inside
+  `src/components/react-bits-component/`.
+- New styles go in the matching split file. Breakpoints go only in
+  `src/styles/responsive.css`. Tokens go only in `src/styles/variables.css`.
+
 ## Change Discipline
 
 Before changing a shared abstraction:

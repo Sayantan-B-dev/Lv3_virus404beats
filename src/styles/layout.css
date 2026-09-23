@@ -1,0 +1,96 @@
+/* 03 - App shell. Page, fixed rail, nav, mini player, topbar. */
+
+.page{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 75% 10%,rgba(247,43,27,.13),transparent 28%),
+    radial-gradient(circle at 20% 80%,rgba(255,255,255,.025),transparent 26%),
+    var(--bg);
+}
+
+/* LEFT RAIL / NAV */
+.rail{
+  position:fixed;left:0;top:0;bottom:0;z-index:200;
+  width:var(--rail);background:
+    linear-gradient(180deg,rgba(255,255,255,.03),transparent 35%),
+    #070707;
+  border-right:1px solid #4b4841;
+  display:flex;flex-direction:column;
+}
+.brand{
+  height:119px;padding:26px 31px;border-bottom:1px solid #4b4841;
+  position:relative;
+}
+.brand h1{margin:0;font:900 31px/.78 var(--display);letter-spacing:1px}
+.brand h1 span{color:var(--red)}
+.brand small{
+  display:block;text-align:center;font-size:9px;letter-spacing:8px;margin-top:11px;color:#cbc7bc;
+}
+.brand .ring{
+  position:absolute;right:-16px;bottom:-16px;width:31px;height:31px;border:1px solid #666;
+  border-radius:50%;background:#070707;display:grid;place-items:center;color:#aaa;
+  box-shadow:0 0 0 5px #070707;
+}
+.nav-wrap{padding:42px 24px 0 40px}
+.nav-label{
+  margin:0 0 10px 20px;color:#5f5b55;font-size:7px;letter-spacing:2px;
+}
+.nav a{
+  position:relative;display:block;padding:11px 0 11px 21px;
+  color:#bdb8ae;font-size:12px;letter-spacing:.15px;
+  transition:transform .15s,color .15s;
+}
+.nav a:before{
+  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:6px;height:6px;border:1px solid #504c45;border-radius:50%;
+}
+.nav a:hover,.nav a.active{color:#fff;transform:translateX(4px)}
+.nav a.active:before{
+  background:var(--red);border-color:var(--red);
+  box-shadow:0 0 11px rgba(247,43,27,.7);
+}
+.nav a.active:after{
+  content:"X";position:absolute;left:-9px;top:4px;color:var(--red);
+  font:15px var(--mono);transform:rotate(-8deg);
+}
+.rail-meta{
+  margin:20px 0 0 20px;padding-top:10px;border-top:1px solid #282723;
+  font-size:7px;line-height:1.8;color:#66625b;
+}
+.side-player{
+  margin-top:auto;padding:18px 22px 20px;border-top:1px solid #3d3933;
+}
+.cover-side{
+  height:137px;border:1px solid #6d675f;position:relative;overflow:hidden;
+}
+.cover-side img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.5)}
+.cover-side:after{
+  content:"404";position:absolute;right:-4px;bottom:-15px;
+  font:100px var(--display);color:transparent;-webkit-text-stroke:1px var(--red);
+}
+.now{font-size:8px;color:var(--red);letter-spacing:1px;margin-top:12px}
+.side-player h2{margin:4px 0 0;font:26px var(--display)}
+.side-meta{font-size:8px;color:#706c64}
+.progress{height:3px;background:#292724;margin:13px 0}
+.progress span{display:block;height:100%;width:42%;background:var(--red)}
+.controls{display:flex;justify-content:space-between;align-items:center}
+.controls button{border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.controls .play{
+  width:39px;height:39px;border:1px solid #aaa;border-radius:50%;display:grid;place-items:center;
+}
+.side-socials{display:flex;gap:14px;margin-top:17px;color:#777;font-size:11px}
+.side-socials svg{width:12px;height:12px;display:block}
+
+/* APP SHELL */
+main{margin-left:var(--rail)}
+.topbar{
+  min-height:73px;padding:0 36px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid #3b3934;font-size:10px;
+}
+.topbar .red{color:var(--red)}
+.available{
+  border:1px solid #5d5952;padding:8px 11px;display:inline-flex;align-items:center;gap:8px;
+}
+.available i{width:7px;height:7px;border-radius:50%;background:#1dd177;display:inline-block}
+.work-link{border:1px solid #3f3c37;padding:10px 13px;color:var(--red)}
+.work-link:hover{background:var(--red);color:#070707}

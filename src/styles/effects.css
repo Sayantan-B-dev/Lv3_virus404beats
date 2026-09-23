@@ -1,0 +1,78 @@
+/* 11 - Motion system. Drift loops, glow, parallax, hover lifts. */
+/* Decorative layers only. Never animate primary copy or CTAs here. */
+
+@keyframes drift-a{from{translate:0 0;rotate:-1deg}to{translate:3px -4px;rotate:1deg}}
+@keyframes drift-b{from{translate:0 0;rotate:1deg}to{translate:-4px 3px;rotate:-1deg}}
+@keyframes drift-c{from{translate:0 0}to{translate:2px 4px}}
+
+.hero .scribble.one{animation:drift-a 7s ease-in-out infinite alternate}
+.hero .scribble.two{animation:drift-b 9s ease-in-out infinite alternate}
+.hero .scribble.three{animation:drift-c 11s ease-in-out infinite alternate}
+.hero .scribble.four{animation:drift-a 8s ease-in-out infinite alternate-reverse}
+.hero .marker.m1{animation:drift-b 10s ease-in-out infinite alternate}
+.hero .marker.m2{animation:drift-c 7.5s ease-in-out infinite alternate-reverse}
+.hero .marker.m3{animation:drift-a 12s ease-in-out infinite alternate}
+.hero .paper.sheet1{animation:drift-b 13s ease-in-out infinite alternate}
+.hero .paper.sheet2{animation:drift-c 9.5s ease-in-out infinite alternate-reverse}
+.hero .note.craft{animation:drift-a 10.5s ease-in-out infinite alternate-reverse}
+.hero .note.genres{animation:drift-b 12s ease-in-out infinite alternate}
+.hero .cross.a{animation:drift-c 8s ease-in-out infinite alternate}
+.hero .cross.b{animation:drift-a 9s ease-in-out infinite alternate-reverse}
+.hero .cross.c{animation:drift-b 11s ease-in-out infinite alternate}
+.hero .crosshair.ch1{animation:drift-c 14s ease-in-out infinite alternate}
+.hero .crosshair.ch2{animation:drift-a 10s ease-in-out infinite alternate-reverse}
+.hero .crosshair.ch3{animation:drift-b 12.5s ease-in-out infinite alternate}
+
+/* Card border glow. Idle is subtle, hover and focus go full red. */
+.workcard,.release,.service,.about-copy,.about-pic,.contact{
+  transition:border-color var(--duration-fast) var(--ease-clean),box-shadow var(--duration-fast) var(--ease-clean);
+}
+.workcard:hover,.workcard:focus-visible,
+.release:hover,.release:focus-visible,
+.service:hover,.service:focus-visible{
+  border-color:var(--red);
+  box-shadow:0 0 0 1px var(--red),0 0 22px rgba(247,43,27,.35);
+}
+.workcard.big{
+  border-color:#6b6259;
+  box-shadow:0 0 18px rgba(247,43,27,.12);
+}
+
+/* Button hover lift. Hard shadow only, no blur elevation. */
+.btn,.listen,.work-link,.contact-main a{
+  transition:transform var(--duration-fast) var(--ease-rough),box-shadow var(--duration-fast) var(--ease-rough),background var(--duration-fast) var(--ease-clean),color var(--duration-fast) var(--ease-clean);
+}
+.listen:hover,.contact-main a:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 #000}
+
+/* Scroll parallax. Progressive enhancement, static fallback elsewhere. */
+@supports (animation-timeline:scroll()){
+  .hero-photo{
+    animation:hero-photo-drift linear both;
+    animation-timeline:scroll();
+    animation-range:0 700px;
+  }
+  @keyframes hero-photo-drift{from{translate:0 0}to{translate:0 46px}}
+  .hero .paper.sheet1,.hero .paper.sheet2{
+    animation:hero-paper-drift linear both;
+    animation-timeline:scroll();
+    animation-range:0 700px;
+  }
+  @keyframes hero-paper-drift{from{translate:0 0}to{translate:0 -30px}}
+}
+
+/* Custom cursor elements. Activated only on fine pointers by TargetCursor. */
+.target-cursor-dot,.target-cursor-corner{position:fixed;top:0;left:0;pointer-events:none;z-index:2000}
+.target-cursor-dot{width:6px;height:6px;background:var(--red);border-radius:50%}
+.target-cursor-corner{width:22px;height:22px;border:1px solid var(--red)}
+.target-cursor-corner.tl{border-right:0;border-bottom:0}
+.target-cursor-corner.tr{border-left:0;border-bottom:0}
+.target-cursor-corner.bl{border-right:0;border-top:0}
+.target-cursor-corner.br{border-left:0;border-top:0}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .marquee span{animation:none}
+  .hero .scribble,.hero .marker,.hero .paper,.hero .note,.hero .cross,.hero .crosshair{animation:none}
+  .viz-bars i{animation:none}
+  *,*:before,*:after{transition-duration:.01ms !important}
+}

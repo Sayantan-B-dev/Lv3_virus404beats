@@ -1,0 +1,31 @@
+/* 01 - Design tokens. Source of truth: docs/DESIGN.md section 39. */
+/* No selectors here. Values only. */
+
+:root{
+  --bg:#050505;
+  --near:#090909;
+  --paper:#d8d3c8;
+  --paper2:#b9b3a8;
+  --white:#eee9df;
+  --red:#f72b1b;
+  --red2:#c7190e;
+  --gray:#77736b;
+  --line:#3b3934;
+  --mono:var(--font-mono),"IBM Plex Mono",monospace;
+  --display:var(--font-display),"Anton",Impact,sans-serif;
+  --scribble:var(--font-scribble),"Permanent Marker",cursive;
+  --rail:210px;
+  --space-1:8px;
+  --space-2:12px;
+  --space-3:16px;
+  --space-4:24px;
+  --space-5:32px;
+  --space-6:40px;
+  --border-thin:1px solid var(--line);
+  --border-strong:1px solid #4b4841;
+  --ease-rough:cubic-bezier(.2,.9,.25,1);
+  --ease-clean:ease-out;
+  --duration-fast:150ms;
+  --duration-medium:350ms;
+  --duration-slow:650ms;
+}

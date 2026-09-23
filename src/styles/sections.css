@@ -1,0 +1,17 @@
+/* 05 - Shared section chrome. Marquee plus section heads. */
+
+.marquee{
+  height:40px;background:var(--red);color:#070707;border-top:1px solid #403c36;border-bottom:1px solid #403c36;
+  overflow:hidden;white-space:nowrap;
+}
+.marquee span{display:inline-block;font:24px var(--display);letter-spacing:1.1px;padding:8px 0;animation:marquee 19s linear infinite}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+.section{padding:19px 39px 39px;border-bottom:1px solid #3a3731}
+.section-head{
+  border-top:1px solid #4b4740;padding-top:9px;margin-bottom:17px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.section-head h3{margin:0;font:30px var(--display)}
+.section-head h3 span{color:var(--red)}
+.section-head small{font-size:8px;color:#77736b}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, IBM_Plex_Mono, Permanent_Marker } from "next/font/google";
 import "./globals.css";
-import "../styles/virus.css";
 
 const display = Anton({
   weight: "400",

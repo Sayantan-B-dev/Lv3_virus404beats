@@ -1,0 +1,9 @@
+/* 10 - Contact plus footer. */
+
+.contact{display:grid;grid-template-columns:1fr 1fr;border:1px solid #46413a}
+.contact-main{padding:32px;background:var(--red);color:#050505}
+.contact-main h4{margin:0;font:128px/.62 var(--display)}.contact-main p{font-size:9px;line-height:1.7;max-width:420px;margin:26px 0}.contact-main a{display:inline-block;border:1px solid #080808;padding:11px 14px;font-size:8px}
+.contact-side{padding:30px;display:flex;flex-direction:column;justify-content:center}
+.contact-row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #36322e;font-size:8px}.contact-row span:last-child{color:var(--red)}
+
+.footer{padding:25px 39px 60px;display:flex;justify-content:space-between;font-size:7px;color:#5e5a53;letter-spacing:.7px}

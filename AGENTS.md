@@ -74,6 +74,10 @@ NEXT.JS
 RSC default.
 Client components only for browser state/API/interaction needs.
 
+STYLING
+Pure CSS only. All CSS in src/styles/*. No style props in TSX.
+Details in docs/CODE_CONVENTION.md Styling section.
+
 DESIGN
 Maximalism + grid-based brutalism + editorial/music aesthetic.
 Details in docs/DESIGN.md.
