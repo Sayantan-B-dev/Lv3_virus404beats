@@ -1,7 +1,7 @@
 /* 04 - Collage hero. Layer order Z0 to Z10 lives here. */
 
 .hero{
-  min-height:680px;position:relative;overflow:hidden;padding:28px 38px 34px;
+  min-height:680px;position:relative;overflow:hidden;padding:28px 38px 110px;
   border-bottom:1px solid #403d37;
   background:
     linear-gradient(90deg,transparent 0 24%,rgba(255,255,255,.026) 24% 24.2%,transparent 24.2%),

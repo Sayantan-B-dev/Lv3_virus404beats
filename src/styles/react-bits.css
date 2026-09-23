@@ -1,13 +1,16 @@
 /* 13 - Vendored React Bits styles. Relocated here from component folders. */
 /* Component TSX lives in src/components/react-bits-component. */
 
-/* SplitText */
+/* SplitText. Hidden overflow masks the char entrance. Breathing room
+   around the box stops tight display lines from cutting glyphs. */
 .split-parent{
   overflow:hidden;
   display:inline-block;
   white-space:normal;
   word-wrap:break-word;
   will-change:transform,opacity;
+  padding:.1em .08em .12em;
+  margin:-.1em -.08em -.12em;
 }
 .split-align-left{text-align:left}
 .split-align-center{text-align:center}
