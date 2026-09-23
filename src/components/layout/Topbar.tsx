@@ -2,7 +2,7 @@ export default function Topbar() {
   return (
     <header className="topbar">
       <div>
-        <span className="red">///</span> PRODUCTION - MIXING - MASTERING
+        <span className="red">{"///"}</span> PRODUCTION - MIXING - MASTERING
       </div>
       <div className="available">
         <i aria-hidden="true" /> AVAILABLE FOR WORK &rarr;
