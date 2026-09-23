@@ -66,18 +66,18 @@ export default function MiniPlayer() {
         <span />
       </div>
       <div className="controls">
-        <button type="button" onClick={() => step(-1)} aria-label="Previous track">
+        <button type="button" onClick={() => step(-1)} className="cursor-target" aria-label="Previous track">
           <PrevIcon />
         </button>
         <button
           type="button"
           onClick={() => setPlaying((p) => !p)}
-          className="play"
+          className="play cursor-target"
           aria-label={playing ? "Pause" : "Play"}
         >
           {playing ? <PauseIcon /> : <PlayIcon />}
         </button>
-        <button type="button" onClick={() => step(1)} aria-label="Next track">
+        <button type="button" onClick={() => step(1)} className="cursor-target" aria-label="Next track">
           <NextIcon />
         </button>
       </div>

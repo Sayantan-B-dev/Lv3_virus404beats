@@ -1,5 +1,4 @@
 import { TRUSTED_PLATFORMS } from "@/data/content";
-import CollageJitter from "./CollageJitter";
 import GenreNote from "./GenreNote";
 import HeroHeadline from "./HeroHeadline";
 import HeroPortrait from "./HeroPortrait";
@@ -25,40 +24,38 @@ export default function HeroCollage() {
       <HeroHeadline />
       <HeroPortrait />
 
-      <CollageJitter>
-        <div className="note craft">
-          CRAFTING
+      <div className="note craft">
+        CRAFTING
+        <br />
+        SONIC
+        <br />
+        EXPERIENCES
+      </div>
+
+      <GenreNote />
+
+      <div className="paper sheet1" aria-hidden="true">
+        <h4>LIVE // RAW</h4>
+        <p>
+          NO POLISH.
           <br />
-          SONIC
+          NO SAFE MODE.
           <br />
-          EXPERIENCES
-        </div>
+          JUST SOUND.
+        </p>
+      </div>
 
-        <GenreNote />
+      <div className="paper sheet2" aria-hidden="true">
+        <b>PRODUCTION / MIXING / MASTERING</b>
+        <small>404 SIGNAL / ALWAYS ACTIVE</small>
+      </div>
 
-        <div className="paper sheet1" aria-hidden="true">
-          <h4>LIVE // RAW</h4>
-          <p>
-            NO POLISH.
-            <br />
-            NO SAFE MODE.
-            <br />
-            JUST SOUND.
-          </p>
-        </div>
+      <div className="paper sheet3" aria-hidden="true">
+        404
+      </div>
 
-        <div className="paper sheet2" aria-hidden="true">
-          <b>PRODUCTION / MIXING / MASTERING</b>
-          <small>404 SIGNAL / ALWAYS ACTIVE</small>
-        </div>
-
-        <div className="paper sheet3" aria-hidden="true">
-          404
-        </div>
-
-        <Scribble />
-        <TechnicalMarks />
-      </CollageJitter>
+      <Scribble />
+      <TechnicalMarks />
 
       <div className="sticker s1" aria-hidden="true">
         RAW AUDIO

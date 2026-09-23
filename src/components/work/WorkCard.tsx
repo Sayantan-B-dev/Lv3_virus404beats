@@ -15,7 +15,7 @@ export default function WorkCard({ project }: { project: Project }) {
     ? `workcard big ${rotation}`
     : `workcard ${rotation}`;
   return (
-    <a className={cardClass.trim()} href={`#${project.slug}`}>
+    <a className={`cursor-target ${cardClass.trim()}`} href={`#${project.slug}`}>
       <img src={project.coverUrl} alt={`Cover art for ${project.title}`} loading="lazy" />
       <span className="corner">{project.index}</span>
       <div className="work-caption">

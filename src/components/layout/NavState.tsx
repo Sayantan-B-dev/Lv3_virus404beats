@@ -30,7 +30,7 @@ export default function NavState() {
         <a
           key={item.href}
           href={item.href}
-          className={active === item.href ? "active" : undefined}
+          className={active === item.href ? "active cursor-target" : "cursor-target"}
           aria-current={active === item.href ? "true" : undefined}
         >
           {item.label}

@@ -19,7 +19,7 @@ export default function TrackList({ tracks, selectedId, playing, onSelect }: Tra
             role="option"
             tabIndex={0}
             aria-selected={selected}
-            className={selected ? "track active" : "track"}
+            className={selected ? "track active cursor-target" : "track cursor-target"}
             onClick={() => onSelect(track.id)}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {

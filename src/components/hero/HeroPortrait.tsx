@@ -1,4 +1,5 @@
 import { media } from "@/lib/media";
+import GlitchText from "../react-bits-component/GlitchText";
 
 export default function HeroPortrait() {
   return (
@@ -11,7 +12,9 @@ export default function HeroPortrait() {
       </div>
       <div className="photo-label">EST. 404 - MIXX</div>
       <div className="photo-stamp" aria-hidden="true">
-        404
+        <GlitchText speed={0.6} enableOnHover={false} className="stamp-glitch">
+          404
+        </GlitchText>
       </div>
     </div>
   );

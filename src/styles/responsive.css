@@ -1,5 +1,14 @@
 /* 12 - Responsive. All breakpoints live here, nowhere else. */
 
+/* Mid widths. Keeps the giant headline off the portrait and CTAs. */
+@media(max-width:1250px) and (min-width:761px){
+  .hero h2{font-size:clamp(72px,8.2vw,120px)}
+  .hero-copy{width:56%}
+  .hero-photo{width:38%}
+  .note.genres{right:2%}
+  .photo-stamp{font-size:150px}
+}
+
 @media(max-width:1120px){
   :root{--rail:170px}
   .release{grid-template-columns:210px 1fr}

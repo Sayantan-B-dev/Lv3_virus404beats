@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { getPublishedRelease, getPublishedTracks } from "@/data/content";
 import SectionHead from "../layout/SectionHead";
 import { PauseIcon, PlayIcon } from "../icons";
+import SplitText from "../react-bits-component/SplitText";
 import TrackList from "./TrackList";
 import Visualizer from "./Visualizer";
 
@@ -52,13 +53,20 @@ export default function ReleaseCard() {
       <div className="release">
         <div className="release-cover">
           <img src={release.coverUrl} alt={`Cover art for ${release.title}`} />
-          <button type="button" onClick={toggle} aria-label={playing ? "Pause release preview" : "Play release preview"}>
+          <button type="button" onClick={toggle} className="cursor-target" aria-label={playing ? "Pause release preview" : "Play release preview"}>
             {playing ? <PauseIcon /> : <PlayIcon />}
           </button>
         </div>
         <div className="release-info">
           <span className="tag">{release.type}</span>
-          <h4>{release.title}</h4>
+          <SplitText
+            tag="h4"
+            text={release.title}
+            textAlign="left"
+            splitType="chars"
+            delay={35}
+            duration={0.8}
+          />
           <div className="meta">{release.meta}</div>
           <p>{release.description}</p>
           <a className="listen" href="#releases">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, IBM_Plex_Mono, Permanent_Marker } from "next/font/google";
+import TargetCursor from "@/components/react-bits-component/TargetCursor";
 import "./globals.css";
 
 const display = Anton({
@@ -36,7 +37,10 @@ export default function RootLayout({
       lang="en"
       className={`${display.variable} ${mono.variable} ${scribble.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <TargetCursor targetSelector=".cursor-target" />
+        {children}
+      </body>
     </html>
   );
 }

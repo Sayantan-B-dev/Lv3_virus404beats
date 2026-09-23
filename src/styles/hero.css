@@ -47,6 +47,9 @@
   text-shadow:5px 5px 0 #171615;
 }
 .hero h2 .red{display:block;color:var(--red)}
+.hero h2 .split-line{display:block}
+.hero h2 .limits-row{display:block}
+.hero h2 .split-inline{display:inline-block}
 .hero h2 .tag404{
   display:inline-block;font:700 27px var(--mono);vertical-align:top;margin:5px 0 0 7px;
   transform:rotate(7deg);
@@ -85,6 +88,12 @@
 .photo-stamp{
   position:absolute;z-index:6;right:-30px;bottom:-28px;font:185px var(--display);
   color:transparent;-webkit-text-stroke:1px rgba(247,43,27,.62);transform:rotate(-7deg);
+}
+.photo-stamp .stamp-glitch{
+  font:inherit;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(247,43,27,.62);
+  margin:0;
 }
 
 /* taped notes */
