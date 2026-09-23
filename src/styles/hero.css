@@ -64,7 +64,7 @@
 .hero-type .text-type{color:var(--white)}
 .btn{
   border:1px solid #666057;padding:12px 15px;font-size:10px;display:inline-flex;gap:22px;
-  align-items:center;transition:.12s;
+  align-items:center;transition:.3s;
 }
 .btn.primary{background:var(--red);color:#060606;border-color:var(--red);font-weight:700}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #777169}

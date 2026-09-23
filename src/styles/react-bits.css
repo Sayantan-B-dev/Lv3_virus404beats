@@ -56,8 +56,8 @@
 
 /* Magnet */
 .magnet-wrap{position:relative;display:inline-block}
-.magnet-inner{will-change:transform;transition:transform .5s ease-in-out}
-.magnet-inner.is-active{transition:transform .3s ease-out}
+.magnet-inner{will-change:transform;transition:transform .8s ease-in-out}
+.magnet-inner.is-active{transition:transform .5s ease-out}
 
 /* GlitchText. Brand palette, transparent ground. */
 .glitch{

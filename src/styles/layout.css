@@ -66,7 +66,7 @@ html.rail-collapsed .side-player{display:none}
 .nav a{
   position:relative;display:block;padding:11px 0 11px 21px;
   color:#bdb8ae;font-size:12px;letter-spacing:.15px;
-  transition:transform .15s,color .15s;
+  transition:transform .3s,color .3s;
 }
 .nav a:before{
   content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);

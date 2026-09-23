@@ -4,7 +4,7 @@
   height:40px;background:var(--red);color:#070707;border-top:1px solid #403c36;border-bottom:1px solid #403c36;
   overflow:hidden;white-space:nowrap;
 }
-.marquee span{display:inline-block;font:24px var(--display);letter-spacing:1.1px;padding:8px 0;animation:marquee 19s linear infinite}
+.marquee span{display:inline-block;font:24px var(--display);letter-spacing:1.1px;padding:8px 0;animation:marquee 32s linear infinite}
 @keyframes marquee{to{transform:translateX(-50%)}}
 
 .section{padding:19px 39px 39px;border-bottom:1px solid #3a3731}
