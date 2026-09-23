@@ -3,25 +3,35 @@
 import { useEffect, useState } from "react";
 import { NAV_ITEMS } from "@/data/content";
 
-// Tracks visible section and marks the matching nav link active.
+// Scroll position spy. Picks the last section whose top sits above the
+// viewport midpoint, so short sections never share one active marker.
 export default function NavState() {
   const [active, setActive] = useState<string>("#home");
 
   useEffect(() => {
-    const sections = NAV_ITEMS.map((item) =>
-      document.querySelector(item.href)
-    ).filter((el): el is Element => el !== null);
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          setActive(`#${entry.target.id}`);
-        });
-      },
-      { rootMargin: "-36% 0px -53% 0px", threshold: 0 }
-    );
-    sections.forEach((section) => io.observe(section));
-    return () => io.disconnect();
+    let raf = 0;
+    const pick = () => {
+      raf = 0;
+      const sections = Array.from(document.querySelectorAll("section[id]")) as HTMLElement[];
+      const line = window.innerHeight * 0.4;
+      let current = sections[0]?.id ?? "home";
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= line) current = section.id;
+      });
+      setActive(`#${current}`);
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(pick);
+    };
+    pick();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
