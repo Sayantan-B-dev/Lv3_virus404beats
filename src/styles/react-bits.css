@@ -1,3 +1,138 @@
 /* 13 - Vendored React Bits styles. Relocated here from component folders. */
 /* Component TSX lives in src/components/react-bits-component. */
-/* Filled in Phase 3. */
+
+/* SplitText */
+.split-parent{
+  overflow:hidden;
+  display:inline-block;
+  white-space:normal;
+  word-wrap:break-word;
+  will-change:transform,opacity;
+}
+.split-align-left{text-align:left}
+.split-align-center{text-align:center}
+.split-align-right{text-align:right}
+
+/* TargetCursor. Brand red at rest, off-white while locked on. */
+.target-cursor-wrapper{
+  position:fixed;
+  top:0;
+  left:0;
+  width:0;
+  height:0;
+  pointer-events:none;
+  z-index:2147483647;
+  transform:translate(-50%,-50%);
+}
+.target-cursor-dot{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:6px;
+  height:6px;
+  background:var(--red);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  will-change:transform;
+}
+.target-cursor-corner{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:12px;
+  height:12px;
+  border:1px solid var(--red);
+  will-change:transform;
+}
+.target-cursor-wrapper.is-targeting .target-cursor-dot{background:var(--white)}
+.target-cursor-wrapper.is-targeting .target-cursor-corner{border-color:var(--white)}
+.corner-tl{transform:translate(-150%,-150%);border-right:0;border-bottom:0}
+.corner-tr{transform:translate(50%,-150%);border-left:0;border-bottom:0}
+.corner-br{transform:translate(50%,50%);border-left:0;border-top:0}
+.corner-bl{transform:translate(-150%,50%);border-right:0;border-top:0}
+
+/* Magnet */
+.magnet-wrap{position:relative;display:inline-block}
+.magnet-inner{will-change:transform;transition:transform .5s ease-in-out}
+.magnet-inner.is-active{transition:transform .3s ease-out}
+
+/* GlitchText. Brand palette, transparent ground. */
+.glitch{
+  color:var(--white);
+  font-weight:900;
+  position:relative;
+  white-space:nowrap;
+  margin:0 auto;
+  user-select:none;
+}
+.glitch-fast{--glitch-after:1.05s;--glitch-before:.7s}
+.glitch-normal{--glitch-after:1.5s;--glitch-before:1s}
+.glitch-slow{--glitch-after:2.4s;--glitch-before:1.6s}
+.glitch-shadows{--glitch-after-shadow:-5px 0 var(--red);--glitch-before-shadow:5px 0 var(--white)}
+.glitch-no-shadows{--glitch-after-shadow:none;--glitch-before-shadow:none}
+.glitch::after,
+.glitch::before{
+  content:attr(data-text);
+  position:absolute;
+  top:0;
+  color:var(--white);
+  overflow:hidden;
+  clip-path:inset(0 0 0 0);
+}
+.glitch:not(.enable-on-hover)::after{
+  left:10px;
+  text-shadow:var(--glitch-after-shadow,-5px 0 var(--red));
+  animation:animate-glitch var(--glitch-after,1.5s) infinite linear alternate-reverse;
+}
+.glitch:not(.enable-on-hover)::before{
+  left:-10px;
+  text-shadow:var(--glitch-before-shadow,5px 0 var(--white));
+  animation:animate-glitch var(--glitch-before,1s) infinite linear alternate-reverse;
+}
+.glitch.enable-on-hover::after,
+.glitch.enable-on-hover::before{
+  content:'';
+  opacity:0;
+  animation:none;
+}
+.glitch.enable-on-hover:hover::after{
+  content:attr(data-text);
+  opacity:1;
+  left:10px;
+  text-shadow:var(--glitch-after-shadow,-5px 0 var(--red));
+  animation:animate-glitch var(--glitch-after,1.5s) infinite linear alternate-reverse;
+}
+.glitch.enable-on-hover:hover::before{
+  content:attr(data-text);
+  opacity:1;
+  left:-10px;
+  text-shadow:var(--glitch-before-shadow,5px 0 var(--white));
+  animation:animate-glitch var(--glitch-before,1s) infinite linear alternate-reverse;
+}
+@keyframes animate-glitch{
+  0%{clip-path:inset(20% 0 50% 0)}
+  5%{clip-path:inset(10% 0 60% 0)}
+  10%{clip-path:inset(15% 0 55% 0)}
+  15%{clip-path:inset(25% 0 35% 0)}
+  20%{clip-path:inset(30% 0 40% 0)}
+  25%{clip-path:inset(40% 0 20% 0)}
+  30%{clip-path:inset(10% 0 60% 0)}
+  35%{clip-path:inset(15% 0 55% 0)}
+  40%{clip-path:inset(25% 0 35% 0)}
+  45%{clip-path:inset(30% 0 40% 0)}
+  50%{clip-path:inset(20% 0 50% 0)}
+  55%{clip-path:inset(10% 0 60% 0)}
+  60%{clip-path:inset(15% 0 55% 0)}
+  65%{clip-path:inset(25% 0 35% 0)}
+  70%{clip-path:inset(30% 0 40% 0)}
+  75%{clip-path:inset(40% 0 20% 0)}
+  80%{clip-path:inset(20% 0 50% 0)}
+  85%{clip-path:inset(10% 0 60% 0)}
+  90%{clip-path:inset(15% 0 55% 0)}
+  95%{clip-path:inset(25% 0 35% 0)}
+  100%{clip-path:inset(30% 0 40% 0)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .glitch::after,.glitch::before{animation:none}
+}
