@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { getPublishedRelease, getPublishedTracks } from "@/data/content";
 import SectionHead from "../layout/SectionHead";
 import { PauseIcon, PlayIcon } from "../icons";
-import BorderGlow from "../react-bits-component/BorderGlow";
 import SplitText from "../react-bits-component/SplitText";
 import TrackList from "./TrackList";
 import Visualizer from "./Visualizer";
@@ -51,7 +50,6 @@ export default function ReleaseCard() {
     <section className="section" id="releases">
       <SectionHead lead="LATEST" accent="RELEASE" note="VIEW ALL RELEASES &rarr;" />
 
-      <BorderGlow animated edgeSensitivity={24} glowRadius={32}>
       <div className="release">
         <div className="release-cover">
           <img src={release.coverUrl} alt={`Cover art for ${release.title}`} />
@@ -83,7 +81,6 @@ export default function ReleaseCard() {
           audio={audioRef}
         />
       </div>
-      </BorderGlow>
       <audio
         ref={audioRef}
         src={selected.audioUrl}

@@ -7,7 +7,6 @@ TS-CSS variants, adapted to the repo pure CSS rule.
 - TargetCursor.tsx: main cursor, red dot plus corner brackets.
 - Magnet.tsx: magnetic pull on CTAs.
 - GlitchText.tsx: RGB split glitch for 404 marks.
-- BorderGlow.tsx: pointer tracked border glow for cards.
 - ScrambledText.tsx: pointer proximity text scramble.
 - ScrollFloat.tsx: scroll scrubbed char float for headings.
 - TextType.tsx: typing loop for microcopy.
