@@ -1,4 +1,5 @@
 import type { Track } from "@/types/content";
+import { PauseIcon, PlayIcon } from "../icons";
 
 interface TrackListProps {
   tracks: Track[];
@@ -27,7 +28,15 @@ export default function TrackList({ tracks, selectedId, playing, onSelect }: Tra
               }
             }}
           >
-            <span>{selected && playing ? "II" : selected ? "\u25B6" : track.position}</span>
+            <span className="track-mark">
+              {selected && playing ? (
+                <PauseIcon />
+              ) : selected ? (
+                <PlayIcon />
+              ) : (
+                track.position
+              )}
+            </span>
             <span>{track.title}</span>
             <span className="size">{track.plays}</span>
             <span className="dur">{track.duration}</span>

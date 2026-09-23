@@ -7,6 +7,7 @@
 .release-cover{position:relative;overflow:hidden;border-right:1px solid #4e4941}.release-cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(.42) contrast(1.5)}
 .release-cover:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(247,43,27,.58),transparent 55%);mix-blend-mode:multiply}
 .release-cover button{position:absolute;z-index:5;left:14px;bottom:14px;width:40px;height:40px;border-radius:50%;border:1px solid #aaa;background:#070707b8;display:grid;place-items:center;cursor:pointer}
+.release-cover button svg{width:14px;height:14px;display:block;color:var(--white)}
 .release-info{padding:24px;border-right:1px solid #4e4941}
 .tag{font-size:8px;color:var(--red);border:1px solid var(--red);padding:3px 6px}
 .release-info h4{font:44px var(--display);margin:13px 0 3px}
@@ -16,6 +17,8 @@
 .tracklist{font-size:9px}
 .track{display:grid;grid-template-columns:34px 1fr 45px 48px;align-items:center;min-height:56px;padding:0 13px;border-bottom:1px solid #34312d;color:#aaa;cursor:pointer}
 .track.active{background:var(--red);color:#080808}.track .dur{text-align:right}
+.track-mark{display:inline-flex;align-items:center}
+.track-mark svg{width:10px;height:10px;display:block}
 .viz{position:relative;padding:14px;border-left:1px solid #4e4941;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 .viz img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.14;filter:grayscale(1)}
 .viz-bars{position:relative;height:115px;display:flex;gap:2px;align-items:flex-end;border-bottom:1px solid #575149}

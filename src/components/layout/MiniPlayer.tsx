@@ -3,6 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { getActiveTrack, getPublishedTracks } from "@/data/content";
 import { media } from "@/lib/media";
+import {
+  ChatIcon,
+  InstagramIcon,
+  MailIcon,
+  NextIcon,
+  PauseIcon,
+  PlayIcon,
+  PrevIcon,
+  YouTubeIcon,
+} from "../icons";
 
 function formatTime(value: number): string {
   if (!Number.isFinite(value) || value < 0) return "00:00";
@@ -52,12 +62,12 @@ export default function MiniPlayer() {
       <div className="side-meta">
         VIRUS404BEATS - {formatTime(current)} / {formatTime(total)}
       </div>
-      <div className="progress">
-        <span style={{ width: `${progress}%` }} />
+      <div className={`progress p-${Math.max(0, Math.min(100, Math.round(progress)))}`}>
+        <span />
       </div>
       <div className="controls">
         <button type="button" onClick={() => step(-1)} aria-label="Previous track">
-          &#9664;&#9664;
+          <PrevIcon />
         </button>
         <button
           type="button"
@@ -65,17 +75,25 @@ export default function MiniPlayer() {
           className="play"
           aria-label={playing ? "Pause" : "Play"}
         >
-          {playing ? "II" : "&#9654;"}
+          {playing ? <PauseIcon /> : <PlayIcon />}
         </button>
         <button type="button" onClick={() => step(1)} aria-label="Next track">
-          &#9654;&#9654;
+          <NextIcon />
         </button>
       </div>
       <div className="side-socials" aria-hidden="true">
-        <span>&#9673;</span>
-        <span>&#9679;</span>
-        <span>&#9654;</span>
-        <span>&#9678;</span>
+        <span>
+          <YouTubeIcon />
+        </span>
+        <span>
+          <InstagramIcon />
+        </span>
+        <span>
+          <MailIcon />
+        </span>
+        <span>
+          <ChatIcon />
+        </span>
       </div>
       <audio
         ref={audioRef}

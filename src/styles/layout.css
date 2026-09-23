@@ -75,10 +75,13 @@
 .progress span{display:block;height:100%;width:42%;background:var(--red)}
 .controls{display:flex;justify-content:space-between;align-items:center}
 .controls button{border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.controls button svg{width:14px;height:14px;display:block}
 .controls .play{
   width:39px;height:39px;border:1px solid #aaa;border-radius:50%;display:grid;place-items:center;
 }
+.controls .play svg{width:15px;height:15px}
 .side-socials{display:flex;gap:14px;margin-top:17px;color:#777;font-size:11px}
+.side-socials span{display:grid;place-items:center}
 .side-socials svg{width:12px;height:12px;display:block}
 
 /* APP SHELL */
@@ -94,3 +97,106 @@ main{margin-left:var(--rail)}
 .available i{width:7px;height:7px;border-radius:50%;background:#1dd177;display:inline-block}
 .work-link{border:1px solid #3f3c37;padding:10px 13px;color:var(--red)}
 .work-link:hover{background:var(--red);color:#070707}
+
+/* Progress percent classes. TSX switches p-N, never widths. */
+.progress.p-0 span{width:0%}
+.progress.p-1 span{width:1%}
+.progress.p-2 span{width:2%}
+.progress.p-3 span{width:3%}
+.progress.p-4 span{width:4%}
+.progress.p-5 span{width:5%}
+.progress.p-6 span{width:6%}
+.progress.p-7 span{width:7%}
+.progress.p-8 span{width:8%}
+.progress.p-9 span{width:9%}
+.progress.p-10 span{width:10%}
+.progress.p-11 span{width:11%}
+.progress.p-12 span{width:12%}
+.progress.p-13 span{width:13%}
+.progress.p-14 span{width:14%}
+.progress.p-15 span{width:15%}
+.progress.p-16 span{width:16%}
+.progress.p-17 span{width:17%}
+.progress.p-18 span{width:18%}
+.progress.p-19 span{width:19%}
+.progress.p-20 span{width:20%}
+.progress.p-21 span{width:21%}
+.progress.p-22 span{width:22%}
+.progress.p-23 span{width:23%}
+.progress.p-24 span{width:24%}
+.progress.p-25 span{width:25%}
+.progress.p-26 span{width:26%}
+.progress.p-27 span{width:27%}
+.progress.p-28 span{width:28%}
+.progress.p-29 span{width:29%}
+.progress.p-30 span{width:30%}
+.progress.p-31 span{width:31%}
+.progress.p-32 span{width:32%}
+.progress.p-33 span{width:33%}
+.progress.p-34 span{width:34%}
+.progress.p-35 span{width:35%}
+.progress.p-36 span{width:36%}
+.progress.p-37 span{width:37%}
+.progress.p-38 span{width:38%}
+.progress.p-39 span{width:39%}
+.progress.p-40 span{width:40%}
+.progress.p-41 span{width:41%}
+.progress.p-42 span{width:42%}
+.progress.p-43 span{width:43%}
+.progress.p-44 span{width:44%}
+.progress.p-45 span{width:45%}
+.progress.p-46 span{width:46%}
+.progress.p-47 span{width:47%}
+.progress.p-48 span{width:48%}
+.progress.p-49 span{width:49%}
+.progress.p-50 span{width:50%}
+.progress.p-51 span{width:51%}
+.progress.p-52 span{width:52%}
+.progress.p-53 span{width:53%}
+.progress.p-54 span{width:54%}
+.progress.p-55 span{width:55%}
+.progress.p-56 span{width:56%}
+.progress.p-57 span{width:57%}
+.progress.p-58 span{width:58%}
+.progress.p-59 span{width:59%}
+.progress.p-60 span{width:60%}
+.progress.p-61 span{width:61%}
+.progress.p-62 span{width:62%}
+.progress.p-63 span{width:63%}
+.progress.p-64 span{width:64%}
+.progress.p-65 span{width:65%}
+.progress.p-66 span{width:66%}
+.progress.p-67 span{width:67%}
+.progress.p-68 span{width:68%}
+.progress.p-69 span{width:69%}
+.progress.p-70 span{width:70%}
+.progress.p-71 span{width:71%}
+.progress.p-72 span{width:72%}
+.progress.p-73 span{width:73%}
+.progress.p-74 span{width:74%}
+.progress.p-75 span{width:75%}
+.progress.p-76 span{width:76%}
+.progress.p-77 span{width:77%}
+.progress.p-78 span{width:78%}
+.progress.p-79 span{width:79%}
+.progress.p-80 span{width:80%}
+.progress.p-81 span{width:81%}
+.progress.p-82 span{width:82%}
+.progress.p-83 span{width:83%}
+.progress.p-84 span{width:84%}
+.progress.p-85 span{width:85%}
+.progress.p-86 span{width:86%}
+.progress.p-87 span{width:87%}
+.progress.p-88 span{width:88%}
+.progress.p-89 span{width:89%}
+.progress.p-90 span{width:90%}
+.progress.p-91 span{width:91%}
+.progress.p-92 span{width:92%}
+.progress.p-93 span{width:93%}
+.progress.p-94 span{width:94%}
+.progress.p-95 span{width:95%}
+.progress.p-96 span{width:96%}
+.progress.p-97 span{width:97%}
+.progress.p-98 span{width:98%}
+.progress.p-99 span{width:99%}
+.progress.p-100 span{width:100%}

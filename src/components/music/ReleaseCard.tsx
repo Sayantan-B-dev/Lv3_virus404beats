@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getPublishedRelease, getPublishedTracks } from "@/data/content";
 import SectionHead from "../layout/SectionHead";
+import { PauseIcon, PlayIcon } from "../icons";
 import TrackList from "./TrackList";
 import Visualizer from "./Visualizer";
 
@@ -52,7 +53,7 @@ export default function ReleaseCard() {
         <div className="release-cover">
           <img src={release.coverUrl} alt={`Cover art for ${release.title}`} />
           <button type="button" onClick={toggle} aria-label={playing ? "Pause release preview" : "Play release preview"}>
-            {playing ? "II" : "\u25B6"}
+            {playing ? <PauseIcon /> : <PlayIcon />}
           </button>
         </div>
         <div className="release-info">
