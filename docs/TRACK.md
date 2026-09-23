@@ -6,12 +6,12 @@ Pure CSS rule active. DB, Cloudinary upload, auth, admin follow next.
 
 2026-09-23
 DONE
-- style system split into src/styles layers, globals holds imports only
-- pure CSS rule embedded in docs/CODE_CONVENTION.md plus AGENTS.md
-- SVG icon set replaces all text glyphs, broken play icon fixed
-- React Bits vendored: SplitText, TargetCursor, Magnet, GlitchText
-- real Web Audio spectrum with procedural fallback, class based levels
-- hero overlap guards, scroll parallax, drift loops, card glow
+- headline clipping fixed with split compensation, trusted clear zone
+- React Bits full set: BorderGlow, ScrambledText, ScrollFloat, TextType
+- WarpText skipped: WebGL canvas text breaks exact typography
+- hero drag plus cursor proximity, positions reset on refresh
+- collapsible slim icon rail, smooth zoom and motion pass
+- nav anchor tracking hardened, services and contact ids verified unique
 - typecheck plus lint plus build pass, homepage render verified
 
 2026-08-23
