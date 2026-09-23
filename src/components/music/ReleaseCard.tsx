@@ -69,13 +69,15 @@ export default function ReleaseCard() {
         <Visualizer
           title={selected.title}
           artistLine={`VIRUS404BEATS - ${selected.duration}`}
-          animated={playing}
+          playing={playing}
+          audio={audioRef}
         />
       </div>
       <audio
         ref={audioRef}
         src={selected.audioUrl}
         preload="none"
+        crossOrigin="anonymous"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
       />

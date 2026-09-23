@@ -1,39 +1,61 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useRef } from "react";
+import {
+  SPECTRUM_BARS,
+  attachSpectrum,
+  startFallback,
+  type LevelCallback,
+} from "@/lib/audio-spectrum";
 import { media } from "@/lib/media";
 
 interface VisualizerProps {
   title: string;
   artistLine: string;
-  animated: boolean;
+  playing: boolean;
+  audio: React.RefObject<HTMLAudioElement | null>;
 }
 
-// Procedural spectrum bars. Kept from the reference prototype.
-export default function Visualizer({ title, artistLine, animated }: VisualizerProps) {
-  const bars = useMemo(
-    () =>
-      Array.from({ length: 64 }).map((_, i) => ({
-        height: 8 + ((i * 37) % 92),
-        duration: 0.28 + ((i * 53) % 95) / 100,
-        delay: -((i * 29) % 150) / 100,
-      })),
-    []
-  );
+// Live spectrum bars. Levels arrive quantized, JS only switches classes.
+export default function Visualizer({ title, artistLine, playing, audio }: VisualizerProps) {
+  const barsRef = useRef<Array<HTMLElement | null>>([]);
+
+  useEffect(() => {
+    const apply: LevelCallback = (levels) => {
+      levels.forEach((level, i) => {
+        const bar = barsRef.current[i];
+        if (bar) bar.className = `sb-${level}`;
+      });
+    };
+    if (!playing) {
+      apply(new Array(SPECTRUM_BARS).fill(1));
+      return;
+    }
+    const el = audio.current;
+    if (!el) {
+      const stop = startFallback(apply);
+      return stop;
+    }
+    const { detach, live } = attachSpectrum(el, apply);
+    if (live) return detach;
+    const stop = startFallback(apply);
+    return () => {
+      detach();
+      stop();
+    };
+  }, [playing, audio, title]);
 
   return (
     <div className="viz">
       <img src={media.vizBackdrop} alt="" aria-hidden="true" />
       <div className="viz-bars" aria-hidden="true">
-        {bars.map((bar, i) => (
+        {Array.from({ length: SPECTRUM_BARS }).map((_, i) => (
           <i
             key={i}
-            style={{
-              height: `${bar.height}%`,
-              animationDuration: animated ? `${bar.duration}s` : undefined,
-              animationDelay: `${bar.delay}s`,
-              animationPlayState: animated ? "running" : "paused",
+            ref={(node) => {
+              barsRef.current[i] = node;
             }}
+            className="sb-1"
           />
         ))}
       </div>
