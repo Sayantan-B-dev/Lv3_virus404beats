@@ -139,3 +139,119 @@
 @media(prefers-reduced-motion:reduce){
   .glitch::after,.glitch::before{animation:none}
 }
+
+/* BorderGlow. Brand theme fixed here: red glow, near black, hard corners. */
+.border-glow-card{
+  --edge-proximity:0;
+  --cursor-angle:45deg;
+  --edge-sensitivity:30;
+  --color-sensitivity:calc(var(--edge-sensitivity) + 20);
+  --cone-spread:25;
+  --glow-padding:40px;
+  --fill-opacity:.5;
+  position:relative;
+  border-radius:2px;
+  isolation:isolate;
+  transform:translate3d(0,0,.01px);
+  display:grid;
+  border:0;
+  background:transparent;
+  overflow:visible;
+}
+.border-glow-card::before,
+.border-glow-card::after,
+.border-glow-card > .edge-light{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  transition:opacity .25s ease-out;
+  z-index:1;
+  pointer-events:none;
+}
+.border-glow-card:not(:hover):not(.sweep-active)::before,
+.border-glow-card:not(:hover):not(.sweep-active)::after,
+.border-glow-card:not(:hover):not(.sweep-active) > .edge-light{
+  opacity:0;
+  transition:opacity .75s ease-in-out;
+}
+.border-glow-card::before{
+  border:1px solid transparent;
+  background:
+    linear-gradient(transparent 0 100%) padding-box,
+    radial-gradient(at 80% 55%,hsla(4,100%,55%,1) 0px,transparent 50%) border-box,
+    radial-gradient(at 69% 34%,hsla(10,100%,60%,1) 0px,transparent 50%) border-box,
+    radial-gradient(at 8% 6%,hsla(0,80%,45%,1) 0px,transparent 50%) border-box,
+    radial-gradient(at 41% 38%,hsla(4,90%,65%,1) 0px,transparent 50%) border-box,
+    radial-gradient(at 86% 85%,hsla(12,95%,50%,1) 0px,transparent 50%) border-box,
+    radial-gradient(at 82% 18%,hsla(45,90%,60%,1) 0px,transparent 50%) border-box,
+    radial-gradient(at 51% 4%,hsla(4,100%,55%,1) 0px,transparent 50%) border-box;
+  opacity:calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black calc(var(--cone-spread) * 1%),
+      transparent calc((var(--cone-spread) + 15) * 1%),
+      transparent calc((100 - var(--cone-spread) - 15) * 1%),
+      black calc((100 - var(--cone-spread)) * 1%)
+    );
+}
+.border-glow-card::after{
+  border:1px solid transparent;
+  background:
+    radial-gradient(at 80% 55%,hsla(4,100%,55%,1) 0px,transparent 50%) padding-box,
+    radial-gradient(at 41% 38%,hsla(4,90%,65%,1) 0px,transparent 50%) padding-box,
+    linear-gradient(hsla(4,100%,55%,1) 0 100%) padding-box;
+  mask-image:
+    linear-gradient(to bottom,black,black),
+    conic-gradient(from var(--cursor-angle) at center,transparent 5%,black 15%,black 85%,transparent 95%);
+  mask-composite:subtract,add;
+  opacity:calc(var(--fill-opacity) * (var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mix-blend-mode:soft-light;
+}
+.border-glow-card > .edge-light{
+  inset:calc(var(--glow-padding) * -1);
+  pointer-events:none;
+  z-index:1;
+  mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%
+    );
+  opacity:calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+  mix-blend-mode:plus-lighter;
+}
+.border-glow-card > .edge-light::before{
+  content:"";
+  position:absolute;
+  inset:var(--glow-padding);
+  border-radius:inherit;
+  box-shadow:
+    inset 0 0 0 1px hsl(4 90% 60% / 100%),
+    inset 0 0 6px 0 hsl(4 90% 60% / 40%),
+    inset 0 0 15px 0 hsl(4 90% 60% / 30%),
+    inset 0 0 25px 2px hsl(4 90% 60% / 20%),
+    0 0 6px 0 hsl(4 90% 60% / 40%),
+    0 0 15px 0 hsl(4 90% 60% / 30%),
+    0 0 25px 2px hsl(4 90% 60% / 20%);
+}
+.border-glow-inner{
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  z-index:0;
+}
+
+/* ScrambledText. Neutral shell, type inherits context. */
+.scramble-block{display:block}
+.scramble-block p{margin:0}
+.scramble-block .char{will-change:transform;display:inline-block}
+
+/* ScrollFloat. Neutral shell, type inherits context. */
+.scroll-float{overflow:hidden}
+.scroll-float-text{display:inline-block}
+.scroll-float .char{display:inline-block}
+
+/* TextType */
+.text-type{display:inline-block;white-space:pre-wrap}
+.text-type__cursor{margin-left:.25rem;display:inline-block;opacity:1;color:var(--red)}
+.text-type__cursor--hidden{display:none}

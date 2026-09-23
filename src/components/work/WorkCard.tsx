@@ -1,4 +1,6 @@
 import type { Project } from "@/types/content";
+import BorderGlow from "../react-bits-component/BorderGlow";
+import ScrollFloat from "../react-bits-component/ScrollFloat";
 
 // Rotation values come from content, presentation stays in work.css.
 const ROTATION_CLASS: Record<string, string> = {
@@ -15,14 +17,18 @@ export default function WorkCard({ project }: { project: Project }) {
     ? `workcard big ${rotation}`
     : `workcard ${rotation}`;
   return (
-    <a className={`cursor-target ${cardClass.trim()}`} href={`#${project.slug}`}>
-      <img src={project.coverUrl} alt={`Cover art for ${project.title}`} loading="lazy" />
-      <span className="corner">{project.index}</span>
-      <div className="work-caption">
-        <small>{project.category}</small>
-        <h4>{project.title}</h4>
-        <p>{project.detail}</p>
-      </div>
-    </a>
+    <BorderGlow className={`${rotation} cursor-target`} edgeSensitivity={28} glowRadius={28}>
+      <a className={cardClass.trim()} href={`#${project.slug}`}>
+        <img src={project.coverUrl} alt={`Cover art for ${project.title}`} loading="lazy" />
+        <span className="corner">{project.index}</span>
+        <div className="work-caption">
+          <small>{project.category}</small>
+          <ScrollFloat tag="h4" stagger={0.02} scrollStart="top bottom+=10%" scrollEnd="center center">
+            {project.title}
+          </ScrollFloat>
+          <p>{project.detail}</p>
+        </div>
+      </a>
+    </BorderGlow>
   );
 }

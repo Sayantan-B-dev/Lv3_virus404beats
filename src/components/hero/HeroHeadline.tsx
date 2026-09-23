@@ -1,7 +1,20 @@
 "use client";
 
 import Magnet from "../react-bits-component/Magnet";
+import ScrambledText from "../react-bits-component/ScrambledText";
 import SplitText from "../react-bits-component/SplitText";
+import TextType from "../react-bits-component/TextType";
+
+const TYPE_WORDS = [
+  "TRAP",
+  "DRILL",
+  "HIP HOP",
+  "JERSEY",
+  "LO-FI",
+  "AMBIENT",
+  "BOOM BAP",
+  "EXPERIMENTAL",
+];
 
 export default function HeroHeadline() {
   return (
@@ -38,11 +51,11 @@ export default function HeroHeadline() {
           <span className="tag404">404</span>
         </span>
       </h2>
-      <p>
+      <ScrambledText radius={90} duration={0.9} speed={0.6} scrambleChars=".:/#">
         I craft immersive soundscapes, hard-hitting beats and industry-ready
         music for artists and brands worldwide. Every sound is designed to
         leave a mark.
-      </p>
+      </ScrambledText>
       <div className="hero-buttons">
         <Magnet magnetStrength={3}>
           <a className="btn primary cursor-target" href="#work">
@@ -54,6 +67,17 @@ export default function HeroHeadline() {
             CONTACT ME &rarr;
           </a>
         </Magnet>
+      </div>
+      <div className="hero-type" aria-hidden="true">
+        <span className="hero-type-label">NOW COOKING</span>
+        <TextType
+          text={TYPE_WORDS}
+          typingSpeed={70}
+          deletingSpeed={32}
+          pauseDuration={1400}
+          startOnVisible
+          cursorCharacter="_"
+        />
       </div>
     </div>
   );

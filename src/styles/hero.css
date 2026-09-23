@@ -56,6 +56,12 @@
 }
 .hero p{max-width:550px;margin:28px 0 18px;color:#c1bcb1;font-size:10px;line-height:1.82}
 .hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+.hero-type{
+  position:relative;z-index:8;display:flex;gap:10px;align-items:center;
+  margin-top:18px;font-size:9px;letter-spacing:2px;color:#6f6b64;
+}
+.hero-type-label{border:1px solid #4b4841;padding:4px 7px;color:var(--red)}
+.hero-type .text-type{color:var(--white)}
 .btn{
   border:1px solid #666057;padding:12px 15px;font-size:10px;display:inline-flex;gap:22px;
   align-items:center;transition:.12s;
